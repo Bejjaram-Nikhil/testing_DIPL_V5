@@ -1,12 +1,23 @@
 import { useState } from "react";
 import { ContactCta } from "../components/sections/ContactCta";
+import { Partners } from "../components/sections/Partners";
 import { Seo } from "../components/system/Seo";
 import { KpiCard } from "../features/kpis/KpiCard";
 import { kpiCards } from "../features/kpis/kpiCards";
+import "../styles/kpi-cards.css";
 import "../styles/kpis-heading.css";
 
 export default function KpisPage() {
-  const [openCard, setOpenCard] = useState<number | null>(null);
+  const [openCards, setOpenCards] = useState<Set<number>>(() => new Set());
+
+  const toggleCard = (index: number) => {
+    setOpenCards((current) => {
+      const next = new Set(current);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  };
 
   return (
     <>
@@ -26,14 +37,15 @@ export default function KpisPage() {
             <KpiCard
               key={`${kpi.value}-${kpi.title}`}
               index={index}
-              isOpen={openCard === index}
+              isOpen={openCards.has(index)}
               kpi={kpi}
-              onToggle={() => setOpenCard((current) => (current === index ? null : index))}
+              onToggle={() => toggleCard(index)}
             />
           ))}
         </div>
       </section>
 
+      <Partners />
       <ContactCta />
     </>
   );

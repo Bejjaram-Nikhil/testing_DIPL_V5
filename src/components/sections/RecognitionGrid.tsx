@@ -4,6 +4,7 @@ import type { Recognition } from "../../types/content";
 import { Reveal } from "../ui/Reveal";
 import { Icon } from "../ui/Icon";
 import { SectionHeading } from "../ui/SectionHeading";
+import "../../styles/recognition.css";
 
 export function RecognitionGrid() {
   const [openRecognition, setOpenRecognition] = useState<Recognition | null>(null);

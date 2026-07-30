@@ -9,6 +9,7 @@ export type IconName =
   | "map"
   | "wave"
   | "leaf"
+  | "coast"
   | "shield"
   | "check"
   | "home"
@@ -35,6 +36,7 @@ export function Icon({ name, ...props }: IconProps) {
     map: <><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></>,
     wave: <><path d="M3 8c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 3 2" /><path d="M3 13c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 3 2" /><path d="M3 18c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 3 2" /></>,
     leaf: <><path d="M20 4c-9 0-15 5-15 12 0 2 1 4 3 4 7 0 12-7 12-16Z" /><path d="M4 21c3-6 7-9 12-12" /></>,
+    coast: <><path d="M3 8c2.2 0 2.2-1.7 4.4-1.7S9.6 8 11.8 8" /><path d="M3 12c2.2 0 2.2-1.7 4.4-1.7s2.2 1.7 4.4 1.7" /><path d="m12 19 2.2-8 2.1 8 2-6 2.2 6" /><path d="M3 19h18" /></>,
     shield: <><path d="M12 3 4.5 6v5.5c0 4.7 3.2 8 7.5 9.5 4.3-1.5 7.5-4.8 7.5-9.5V6L12 3Z" /><path d="m9 12 2 2 4-5" /></>,
     check: <path d="m5 12 4 4L19 6" />,
     home: <><path d="m3 11 9-8 9 8" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></>,

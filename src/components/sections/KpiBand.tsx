@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, type UIEvent } from "react";
 import { ButtonLink } from "../ui/ButtonLink";
 import { Reveal } from "../ui/Reveal";
 import { SectionHeading } from "../ui/SectionHeading";
 import { getKpiImage } from "../../config/assets";
+import "../../styles/kpi-preview-carousel.css";
 
 // Homepage-only KPI preview. The full KPI page has the expanded 18-card version.
 const previewKpis = [
@@ -38,14 +39,13 @@ const previewKpis = [
   },
 ] as const;
 
-const carouselKpis = [...previewKpis, previewKpis[0]] as const;
-
 interface KpiBandProps {
   compactHeading?: boolean;
 }
 
 export function KpiBand({ compactHeading = false }: KpiBandProps = {}) {
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [activeKpiIndex, setActiveKpiIndex] = useState(0);
 
   useEffect(() => {
     const carousel = carouselRef.current;
@@ -54,78 +54,83 @@ export function KpiBand({ compactHeading = false }: KpiBandProps = {}) {
     const mobileQuery = window.matchMedia("(max-width: 720px)");
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     let timer: number | undefined;
-    let resumeTimer: number | undefined;
-    let resetTimer: number | undefined;
 
-    const stop = () => {
-      window.clearTimeout(timer);
-      window.clearTimeout(resumeTimer);
-      window.clearTimeout(resetTimer);
-    };
-
-    const schedule = (delay = 2400) => {
+    const stop = () => window.clearTimeout(timer);
+    const schedule = (delay = 3200) => {
       stop();
       if (!mobileQuery.matches || motionQuery.matches) return;
+
       timer = window.setTimeout(() => {
         const cards = Array.from(carousel.children) as HTMLElement[];
-        const realCardCount = cards.length - 1;
-        if (realCardCount < 2) return;
-        let current = 0;
+        if (cards.length < 2) return;
+
+        const viewportCenter = carousel.scrollLeft + carousel.clientWidth / 2;
+        let currentIndex = 0;
         let closestDistance = Number.POSITIVE_INFINITY;
+
         cards.forEach((card, index) => {
-          const distance = Math.abs(card.offsetLeft - carousel.scrollLeft);
+          const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - viewportCenter);
           if (distance < closestDistance) {
+            currentIndex = index;
             closestDistance = distance;
-            current = index;
           }
         });
-        if (current >= realCardCount) {
-          const first = cards[0];
-          if (!first) return;
-          carousel.scrollTo({ left: first.offsetLeft - carousel.offsetLeft, behavior: "auto" });
-          current = 0;
-        }
-        const nextIndex = current + 1;
-        const next = cards[nextIndex];
-        if (!next) return;
-        carousel.scrollTo({ left: next.offsetLeft - carousel.offsetLeft, behavior: "smooth" });
-        if (nextIndex === realCardCount) {
-          resetTimer = window.setTimeout(() => {
-            const first = cards[0];
-            if (first) carousel.scrollTo({ left: first.offsetLeft - carousel.offsetLeft, behavior: "auto" });
-            schedule();
-          }, 650);
-        } else {
-          schedule();
-        }
+
+        const nextCard = cards[(currentIndex + 1) % cards.length];
+        if (!nextCard) return;
+        carousel.scrollTo({
+          left: nextCard.offsetLeft - (carousel.clientWidth - nextCard.offsetWidth) / 2,
+          behavior: "smooth",
+        });
+        schedule();
       }, delay);
     };
 
     const pause = () => stop();
-    const resume = () => {
-      stop();
-      resumeTimer = window.setTimeout(() => schedule(), 3200);
-    };
+    const resume = () => schedule(4600);
     const sync = () => schedule();
 
-    carousel.addEventListener("pointerenter", pause);
-    carousel.addEventListener("pointerleave", resume);
     carousel.addEventListener("touchstart", pause, { passive: true });
     carousel.addEventListener("touchend", resume, { passive: true });
+    carousel.addEventListener("focusin", pause);
+    carousel.addEventListener("focusout", resume);
     mobileQuery.addEventListener("change", sync);
     motionQuery.addEventListener("change", sync);
     schedule();
 
     return () => {
       stop();
-      carousel.removeEventListener("pointerenter", pause);
-      carousel.removeEventListener("pointerleave", resume);
       carousel.removeEventListener("touchstart", pause);
       carousel.removeEventListener("touchend", resume);
+      carousel.removeEventListener("focusin", pause);
+      carousel.removeEventListener("focusout", resume);
       mobileQuery.removeEventListener("change", sync);
       motionQuery.removeEventListener("change", sync);
     };
   }, []);
+
+  const handleCarouselScroll = (event: UIEvent<HTMLDivElement>) => {
+    const carousel = event.currentTarget;
+    const viewportCenter = carousel.scrollLeft + carousel.clientWidth / 2;
+    let closestIndex = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    Array.from(carousel.children).forEach((child, index) => {
+      const card = child as HTMLElement;
+      const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - viewportCenter);
+      if (distance < closestDistance) {
+        closestIndex = index;
+        closestDistance = distance;
+      }
+    });
+
+    if (closestIndex !== activeKpiIndex) setActiveKpiIndex(closestIndex);
+  };
+
+  const showKpi = (index: number) => {
+    const card = carouselRef.current?.children.item(index) as HTMLElement | null;
+    card?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  };
 
   return (
     <section className={`section kpi-preview-section ${compactHeading ? "kpi-preview-section--compact-heading" : ""}`.trim()}>
@@ -135,24 +140,26 @@ export function KpiBand({ compactHeading = false }: KpiBandProps = {}) {
         ) : (
           <SectionHeading
             eyebrow="Key performance indicators"
-            body="A preview of Drith Infra's KPI framework across wave performance, carbon value, ecological survival, and reusable infrastructure design."
           />
         )}
 
-        <div ref={carouselRef} className="kpi-preview-grid" role="region" aria-label="KPI preview carousel">
-          {carouselKpis.map((kpi, index) => {
-            const isClone = index === previewKpis.length;
-            const sourceIndex = index % previewKpis.length;
-            return (
-            <Reveal key={`${kpi.title}-${index}`} className={isClone ? "kpi-preview-grid__clone" : ""} delay={sourceIndex * 0.04}>
-              <article className="kpi-preview-card" aria-hidden={isClone || undefined}>
+        <div
+          ref={carouselRef}
+          className="kpi-preview-grid"
+          role="region"
+          aria-label="KPI preview carousel"
+          onScroll={handleCarouselScroll}
+        >
+          {previewKpis.map((kpi, index) => (
+            <Reveal key={kpi.title} delay={index * 0.04}>
+              <article className="kpi-preview-card">
                 <div className="kpi-preview-card__topline">
-                  <span>{String(sourceIndex + 1).padStart(2, "0")}</span>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
                   <span>Validated indicator</span>
                 </div>
                 <div className="kpi-preview-card__body">
                   <figure>
-                    <img src={getKpiImage(sourceIndex)} alt="" width="512" height="512" loading="lazy" decoding="async" />
+                    <img src={getKpiImage(index)} alt="" width="512" height="512" loading="lazy" decoding="async" />
                   </figure>
                   <div className={`kpi-preview-card__metric ${kpi.value.length > 6 ? "kpi-preview-card__metric--compact" : ""}`.trim()}>
                     <strong>{kpi.value}</strong>
@@ -162,7 +169,20 @@ export function KpiBand({ compactHeading = false }: KpiBandProps = {}) {
                 <p>{kpi.summary}</p>
               </article>
             </Reveal>
-          );})}
+          ))}
+        </div>
+
+        <div className="kpi-preview-dots" aria-label="Choose a KPI">
+          {previewKpis.map((kpi, index) => (
+            <button
+              key={kpi.title}
+              type="button"
+              className={index === activeKpiIndex ? "is-active" : ""}
+              aria-label={`Show KPI ${index + 1}: ${kpi.title}`}
+              aria-current={index === activeKpiIndex ? "true" : undefined}
+              onClick={() => showKpi(index)}
+            />
+          ))}
         </div>
 
         <div className="kpi-preview-section__action">

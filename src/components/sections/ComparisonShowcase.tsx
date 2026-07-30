@@ -76,8 +76,12 @@ export function ComparisonShowcase() {
     <section className="section comparison-section">
       <div className="shell">
         <SectionHeading
-          title="See how a shoreline can change."
+          eyebrow="Coastal transformation"
+          title="See the shoreline change."
         />
+        <p className="comparison-disclaimer">
+          The visuals below are AI-generated conceptual representations for communication purposes and do not depict a completed project site.
+        </p>
         <div className="comparison-grid">
           {comparisons.map((item, index) => (
             <ComparisonSlider key={item.title} item={item} index={index} />

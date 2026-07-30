@@ -13,7 +13,7 @@ export function ProjectCard({
   detailed?: boolean;
   compact?: boolean;
 }) {
-  const metrics = project.metrics.slice(0, compact ? 2 : detailed ? 4 : 2);
+  const metrics = compact ? [] : project.metrics.slice(0, detailed ? 4 : 2);
 
   // Shared project card used on the homepage, projects page, and project details.
   // `compact` makes the card grid-style; `detailed` allows more metrics.
@@ -27,14 +27,16 @@ export function ProjectCard({
         <h2>{project.name}</h2>
         <p className="project-card__subtitle">{project.subtitle}</p>
         <p>{project.summary}</p>
-        <div className="project-card__metrics">
-          {metrics.map((metric) => (
-            <div key={metric.value + metric.label}>
-              <strong>{metric.value}</strong>
-              <span>{metric.label}</span>
-            </div>
-          ))}
-        </div>
+        {metrics.length ? (
+          <div className="project-card__metrics">
+            {metrics.map((metric) => (
+              <div key={metric.value + metric.label}>
+                <strong>{metric.value}</strong>
+                <span>{metric.label}</span>
+              </div>
+            ))}
+          </div>
+        ) : null}
         <ButtonLink to={`/projects/${project.slug}`} variant="secondary" className="project-glass-button">Explore project</ButtonLink>
       </div>
     </Reveal>

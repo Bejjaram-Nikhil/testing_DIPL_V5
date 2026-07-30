@@ -5,7 +5,13 @@ import { ProjectCard } from "../components/sections/ProjectCard";
 import { Seo } from "../components/system/Seo";
 import { projects } from "../data";
 
+const projectsPageOrder = ["tatchaitanya", "tatrakshak", "tatsagarmitra"] as const;
+
 export default function ProjectsPage() {
+  const orderedProjects = projectsPageOrder
+    .map((slug) => projects.find((project) => project.slug === slug))
+    .filter((project): project is (typeof projects)[number] => Boolean(project));
+
   return (
     <>
       <Seo
@@ -22,7 +28,7 @@ export default function ProjectsPage() {
           </header>
 
           <div className="projects-showcase-grid">
-            {projects.map((project, index) => (
+            {orderedProjects.map((project, index) => (
               <ProjectCard key={project.slug} project={project} index={index} compact />
             ))}
           </div>

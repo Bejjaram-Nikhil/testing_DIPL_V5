@@ -12,6 +12,14 @@ import { Seo } from "../components/system/Seo";
 
 const homepageProjectOrder = ["tatchaitanya", "tatrakshak", "tatsagarmitra"] as const;
 const homepageProjects = homepageProjectOrder.map((slug) => projects.find((project) => project.slug === slug)!);
+const originalHomepageProjectSummaries: Record<(typeof homepageProjectOrder)[number], string> = {
+  tatchaitanya:
+    "Where awareness is the first line of defence, empowering communities to protect nature before disasters even begin.",
+  tatrakshak:
+    "Where we know engineers cant stop disasters, but we can reduce their impact through our knowledge, Innovation and Counsciousness",
+  tatsagarmitra:
+    "Where waste becomes wisdom and people unite with purpose, coastlines heal and balance is restored naturally.",
+};
 
 export default function HomePage() {
   return (
@@ -42,6 +50,9 @@ export default function HomePage() {
         <div className="home-video-hero__content home-video-hero__content--animated shell">
           <h1 className="home-video-hero__wordmark">Drith Infra Private Limited</h1>
           <p className="eyebrow">Partner in Sustainable Coastline Infrastructure</p>
+          <p className="home-video-hero__certification">
+            ISO 9001:2015 Certified Quality Research Organization
+          </p>
         
           <div className="button-row">
             <ButtonLink to="/projects" variant="secondary">Our Projects</ButtonLink>
@@ -61,7 +72,7 @@ export default function HomePage() {
                 <img className="principle-card__image" src={project.image} alt={project.imageAlt} width="1600" height="1000" loading="lazy" decoding="async" />
                 <h3>{project.shortName}</h3>
                 <p className="eyebrow">{project.eyebrow}</p>
-                <p>{project.summary}</p>
+                <p>{originalHomepageProjectSummaries[project.slug as keyof typeof originalHomepageProjectSummaries]}</p>
                 <ButtonLink
                   to={`/projects/${project.slug}`}
                   variant="text"

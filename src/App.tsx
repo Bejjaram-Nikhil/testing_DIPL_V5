@@ -13,6 +13,7 @@ const KpisPage = lazy(() => import("./pages/KpisPage"));
 const BlogsPage = lazy(() => import("./pages/BlogsPage"));
 const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
+const PoliciesPage = lazy(() => import("./pages/PoliciesPage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
@@ -32,6 +33,7 @@ export function App() {
           <Route path="blogs" element={<BlogsPage />} />
           <Route path="blogs/:articleSlug" element={<ArticlePage />} />
           <Route path="contact" element={<ContactPage />} />
+          <Route path="policies" element={<PoliciesPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

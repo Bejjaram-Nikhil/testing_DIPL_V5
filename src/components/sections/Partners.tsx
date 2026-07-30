@@ -1,5 +1,6 @@
 import { partners } from "../../data";
 import { SectionHeading } from "../ui/SectionHeading";
+import "../../styles/partners.css";
 
 export function Partners() {
   return (

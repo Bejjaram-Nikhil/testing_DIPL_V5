@@ -1,0 +1,342 @@
+.kpis-showcase .kpi-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: start;
+  gap: clamp(18px, 2.4vw, 28px);
+}
+
+.kpis-showcase .kpi-card-grid > div {
+  display: block;
+  height: auto;
+}
+
+.kpis-showcase .kpi-flip-card,
+.kpis-showcase .kpi-flip-card--open {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: auto;
+  min-height: 0;
+  padding: clamp(22px, 3vw, 30px);
+  overflow: hidden;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(154, 230, 188, 0.2), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.74), rgba(234, 249, 237, 0.56));
+  box-shadow: 0 5px 14px rgba(8, 47, 63, 0.045), inset 0 1px rgba(255, 255, 255, 0.9);
+  transform: none;
+  transition: border-color 0.24s ease, background 0.24s ease, box-shadow 0.24s ease;
+}
+
+.kpis-showcase .kpi-flip-card::before {
+  content: none;
+}
+
+.kpis-showcase .kpi-flip-card:hover,
+.kpis-showcase .kpi-flip-card:focus-visible,
+.kpis-showcase .kpi-flip-card:focus-within,
+.kpis-showcase .kpi-flip-card--open {
+  border-color: rgba(49, 169, 130, 0.3);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(154, 230, 188, 0.26), transparent 38%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(234, 249, 237, 0.64));
+  box-shadow: 0 6px 16px rgba(8, 47, 63, 0.055), inset 0 1px rgba(255, 255, 255, 0.94);
+  transform: none;
+}
+
+.kpis-showcase .kpi-flip-card__summary {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(16px, 2vw, 22px);
+  min-width: 0;
+  padding-right: 34px;
+}
+
+.kpis-showcase .kpi-flip-card__visual {
+  position: static;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 21px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.28));
+  box-shadow: 0 7px 18px rgba(8, 47, 63, 0.07), inset 0 1px #fff;
+}
+
+.kpis-showcase .kpi-flip-card__visual img {
+  width: 78px;
+  height: 78px;
+  object-fit: contain;
+  filter: none;
+}
+
+.kpis-showcase .kpi-flip-card__index {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  place-items: center;
+  min-width: 34px;
+  min-height: 28px;
+  padding: 4px 8px;
+  color: var(--ocean);
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.48);
+}
+
+.kpis-showcase .kpi-flip-card__heading {
+  min-width: 0;
+}
+
+.kpis-showcase .kpi-flip-card__heading > strong {
+  display: block;
+  margin: 0 0 8px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.6vw, 3.1rem);
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.kpis-showcase .kpi-flip-card__heading > h2 {
+  max-width: 22ch;
+  margin: 0;
+  font-size: clamp(1.08rem, 1.7vw, 1.35rem);
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.kpis-showcase .kpi-flip-card > p {
+  max-width: none;
+  margin: 18px 0 20px;
+  text-align: left;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.kpis-showcase .kpi-flip-card__details {
+  position: static;
+  inset: auto;
+  display: block;
+  width: 100%;
+  max-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  color: var(--ink);
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: translateY(-8px);
+  transition:
+    max-height 0.46s cubic-bezier(0.22, 1, 0.36, 1),
+    margin 0.4s ease,
+    padding 0.4s ease,
+    opacity 0.22s ease,
+    transform 0.4s ease;
+}
+
+.kpis-showcase .kpi-flip-card--open .kpi-flip-card__details {
+  max-height: 650px;
+  margin: 2px 0 20px;
+  padding: 18px 0 0;
+  opacity: 1;
+  pointer-events: auto;
+  border-top: 1px solid rgba(8, 47, 63, 0.1);
+  transform: none;
+}
+
+.kpis-showcase .kpi-flip-card__details h3 {
+  display: none;
+}
+
+.kpis-showcase .kpi-flip-card__details ul {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+.kpis-showcase .kpi-flip-card__details li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--ink-2);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.kpis-showcase .kpi-flip-card__details li::before {
+  position: absolute;
+  top: 0.58em;
+  left: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sea);
+  content: "";
+}
+
+.kpis-showcase .kpi-flip-card__read-more,
+.kpis-showcase .kpi-flip-card--open .kpi-flip-card__read-more {
+  position: static;
+  inset: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: auto;
+  min-width: 174px;
+  min-height: 50px;
+  max-height: none;
+  margin: auto 0 0;
+  padding: 7px 8px 7px 22px;
+  overflow: hidden;
+  cursor: pointer;
+  color: var(--ink);
+  opacity: 1;
+  border: 1px solid rgba(255, 255, 255, 0.94);
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.66), rgba(234, 249, 237, 0.38));
+  box-shadow: none;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+}
+
+.kpis-showcase .kpi-flip-card__read-more:hover {
+  color: var(--ink);
+  border-color: rgba(255, 255, 255, 0.94);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.66), rgba(234, 249, 237, 0.38));
+  box-shadow: none;
+  transform: none;
+}
+
+.kpis-showcase .kpi-flip-card__read-more:focus-visible {
+  color: var(--ocean);
+  border-color: rgba(49, 169, 130, 0.38);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(234, 249, 237, 0.46));
+  box-shadow: none;
+  transform: none;
+}
+
+.kpis-showcase .kpi-flip-card__read-more-dot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.kpis-showcase .kpi-flip-card__read-more-dot::after {
+  width: 7px;
+  height: 7px;
+  border-right: 1.8px solid var(--ocean);
+  border-bottom: 1.8px solid var(--ocean);
+  content: "";
+  transition: transform 0.24s ease;
+  transform: translateY(-2px) rotate(45deg);
+}
+
+.kpis-showcase .kpi-flip-card--open .kpi-flip-card__read-more-dot::after {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+.kpis-showcase .kpi-flip-card:hover .kpi-flip-card__read-more-dot,
+.kpis-showcase .kpi-flip-card:focus-visible .kpi-flip-card__read-more-dot {
+  scale: 1;
+  transform: none;
+  transform-origin: center;
+  box-shadow: none;
+}
+
+.kpis-showcase .kpi-flip-card:hover .kpi-flip-card__read-more-dot::after,
+.kpis-showcase .kpi-flip-card:focus-visible .kpi-flip-card__read-more-dot::after {
+  scale: 1;
+  transform-origin: center;
+  box-shadow: none;
+}
+
+@media (max-width: 600px) {
+  .kpis-showcase .kpi-card-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .kpis-showcase .kpi-flip-card,
+  .kpis-showcase .kpi-flip-card--open {
+    padding: 20px 18px;
+    border-radius: 22px;
+  }
+
+  .kpis-showcase .kpi-flip-card__summary {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 14px;
+    padding-right: 28px;
+  }
+
+  .kpis-showcase .kpi-flip-card__visual {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+  }
+
+  .kpis-showcase .kpi-flip-card__visual img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .kpis-showcase .kpi-flip-card__index {
+    top: 16px;
+    right: 16px;
+  }
+
+  .kpis-showcase .kpi-flip-card__heading > strong {
+    margin-bottom: 6px;
+    font-size: clamp(1.65rem, 8vw, 2.25rem);
+  }
+
+  .kpis-showcase .kpi-flip-card__heading > h2 {
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  .kpis-showcase .kpi-flip-card > p {
+    margin: 15px 0 16px;
+    font-size: 0.84rem;
+    line-height: 1.5;
+  }
+
+  .kpis-showcase .kpi-flip-card__read-more,
+  .kpis-showcase .kpi-flip-card--open .kpi-flip-card__read-more {
+    min-width: 168px;
+    min-height: 48px;
+    padding: 6px 7px 6px 20px;
+    font-size: 0.74rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kpis-showcase .kpi-flip-card,
+  .kpis-showcase .kpi-flip-card__details {
+    transition: none;
+  }
+}

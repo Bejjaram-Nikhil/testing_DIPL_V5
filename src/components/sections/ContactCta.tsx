@@ -11,7 +11,7 @@ export function ContactCta() {
           <p>Share your site, challenge, or collaboration goal.</p>
         </div>
         <div className="contact-cta__actions">
-          <ButtonLink to="/contact">Contact Us</ButtonLink>
+          <ButtonLink to="/contact" className="contact-cta__button">Contact Us</ButtonLink>
           <a href="mailto:drithinfra.pvt@gmail.com"><Icon name="mail" width="19" />drithinfra.pvt@gmail.com</a>
         </div>
       </div>

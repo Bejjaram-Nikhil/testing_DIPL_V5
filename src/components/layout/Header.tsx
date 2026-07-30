@@ -48,7 +48,7 @@ export function Header() {
             {item.label}
           </NavLink>
         ))}
-        <Link className="button button--primary" to="/contact" onClick={() => setIsMenuOpen(false)}>
+        <Link className="button button--secondary mobile-nav__contact" to="/contact" onClick={() => setIsMenuOpen(false)}>
           <span>Contact Us</span>
           <Icon name="arrow" width="18" height="18" />
         </Link>

@@ -10,6 +10,7 @@ import {
 import { Link, useSearchParams } from "react-router-dom";
 import { Seo } from "../components/system/Seo";
 import { assets } from "../config/assets";
+import "../styles/admin.css";
 import {
   enrollAdminTotp,
   fetchAdminAnalytics,
@@ -39,6 +40,162 @@ const rangeOptions: { key: AnalyticsRange; label: string }[] = [
   { key: "24h", label: "Last 24 hours" },
   { key: "7d", label: "Last 7 days" },
 ];
+
+const previewAdminAccess: AdminAccess = {
+  authenticated: true,
+  email: "admin-preview@drithinfra.in",
+  isAdmin: true,
+  currentLevel: "aal2",
+  nextLevel: "aal2",
+  verifiedTotpFactorId: "local-preview",
+};
+
+const previewContacts: AdminContact[] = [
+  {
+    id: "preview-enquiry-1",
+    name: "Priya Sharma",
+    email: "priya.sharma@example.com",
+    phone: "+91 98765 43210",
+    organization: "Coastal Resilience Council",
+    role: "Project Director",
+    projectType: "Nature-based coastal protection",
+    region: "Odisha",
+    message:
+      "We are evaluating a hybrid shoreline protection pilot and would like to understand the recommended assessment process, testing timeline, and indicative project scope.",
+    preferredFollowUp: "Email",
+    requestEvaluation: true,
+    subscribe: true,
+    status: "new",
+    sourceUrl: "/contact",
+    readAt: null,
+    readBy: null,
+    createdAt: "2026-07-27T08:40:00.000Z",
+    updatedAt: "2026-07-27T08:40:00.000Z",
+  },
+  {
+    id: "preview-enquiry-2",
+    name: "Arjun Mehta",
+    email: "arjun.mehta@example.com",
+    phone: "+91 98110 22334",
+    organization: "Blue Habitat Foundation",
+    role: "Programme Lead",
+    projectType: "Mangrove restoration",
+    region: "Maharashtra",
+    message:
+      "Our team is planning a community-led mangrove restoration initiative. We would like to discuss baseline studies, monitoring indicators, and opportunities for technical collaboration.",
+    preferredFollowUp: "Phone",
+    requestEvaluation: false,
+    subscribe: true,
+    status: "new",
+    sourceUrl: "/projects",
+    readAt: null,
+    readBy: null,
+    createdAt: "2026-07-26T12:15:00.000Z",
+    updatedAt: "2026-07-26T12:15:00.000Z",
+  },
+  {
+    id: "preview-enquiry-3",
+    name: "Neha Iyer",
+    email: "neha.iyer@example.com",
+    phone: "+91 99870 44556",
+    organization: "Harbour Engineering Studio",
+    role: "Senior Coastal Engineer",
+    projectType: "Wave attenuation study",
+    region: "Tamil Nadu",
+    message:
+      "Please share more information about your physical scale modelling capabilities and the types of coastal configurations that can be evaluated.",
+    preferredFollowUp: "Email",
+    requestEvaluation: true,
+    subscribe: false,
+    status: "reviewed",
+    sourceUrl: "/kpis",
+    readAt: "2026-07-25T10:05:00.000Z",
+    readBy: "admin-preview@drithinfra.in",
+    createdAt: "2026-07-25T09:20:00.000Z",
+    updatedAt: "2026-07-25T10:05:00.000Z",
+  },
+  {
+    id: "preview-enquiry-4",
+    name: "Rohan Kulkarni",
+    email: "rohan.kulkarni@example.com",
+    phone: "+91 97655 66778",
+    organization: "Sustainable Ports Initiative",
+    role: "Research Associate",
+    projectType: "Research partnership",
+    region: "Goa",
+    message:
+      "We are interested in exploring a research partnership focused on reusable coastal infrastructure and lifecycle carbon performance.",
+    preferredFollowUp: "Video call",
+    requestEvaluation: false,
+    subscribe: true,
+    status: "reviewed",
+    sourceUrl: "/about",
+    readAt: "2026-07-24T14:35:00.000Z",
+    readBy: "admin-preview@drithinfra.in",
+    createdAt: "2026-07-24T11:10:00.000Z",
+    updatedAt: "2026-07-24T14:35:00.000Z",
+  },
+];
+
+function getPreviewAnalytics(range: AnalyticsRange): AnalyticsDashboard {
+  const generatedAt = new Date();
+  const views = [96, 128, 117, 154, 182, 171, 216];
+  const blogViews = [18, 25, 21, 32, 39, 35, 47];
+
+  return {
+    rangeKey: range,
+    generatedAt: generatedAt.toISOString(),
+    summary: {
+      pageViews: 1064,
+      sessions: 638,
+      blogViews: 217,
+      blogSessions: 148,
+      medianLoadMs: 840,
+      p75LcpMs: 1480,
+    },
+    trend: views.map((pageViews, index) => ({
+      bucket: new Date(
+        generatedAt.getTime() - (views.length - index - 1) * 24 * 60 * 60 * 1000,
+      ).toISOString(),
+      pageViews,
+      blogViews: blogViews[index] ?? 0,
+    })),
+    topPages: [
+      { label: "/", value: 412 },
+      { label: "/projects", value: 238 },
+      { label: "/kpis", value: 196 },
+      { label: "/blogs", value: 174 },
+      { label: "/about", value: 132 },
+      {
+        label: "/blogs/the-awareness-that-started-drith-infra",
+        value: 112,
+      },
+      { label: "/contact", value: 86 },
+    ],
+    topCountries: [
+      { label: "IN", value: 472 },
+      { label: "US", value: 82 },
+      { label: "SG", value: 41 },
+      { label: "GB", value: 29 },
+    ],
+    topDevices: [
+      { label: "mobile", value: 381 },
+      { label: "desktop", value: 231 },
+      { label: "tablet", value: 26 },
+    ],
+    topReferrers: [
+      { label: "Direct", value: 284 },
+      { label: "Google", value: 196 },
+      { label: "LinkedIn", value: 91 },
+      { label: "IIT network", value: 38 },
+    ],
+    blogReferrers: [
+      { label: "Google", value: 73 },
+      { label: "LinkedIn", value: 46 },
+      { label: "Direct", value: 29 },
+    ],
+  };
+}
 
 type GateStage =
   | "loading"
@@ -104,6 +261,11 @@ function formatDuration(value: number | null) {
   return `${(value / 1000).toFixed(1)} s`;
 }
 
+function formatLoadTime(value: number | null) {
+  if (value === null) return "Collecting";
+  return `${(value / 1000).toFixed(1)} sec`;
+}
+
 function messageExcerpt(value: string, maximumLength = 150) {
   const normalized = value.replace(/\s+/g, " ").trim();
   return normalized.length > maximumLength
@@ -112,6 +274,7 @@ function messageExcerpt(value: string, maximumLength = 150) {
 }
 
 function displayMetricLabel(value: string, kind?: "country" | "device") {
+  if (value === "/") return "/home";
   if (kind === "country" && /^[A-Z]{2}$/.test(value)) {
     try {
       return new Intl.DisplayNames(["en"], { type: "region" }).of(value) || value;
@@ -123,6 +286,16 @@ function displayMetricLabel(value: string, kind?: "country" | "device") {
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
   return value;
+}
+
+function displayBlogMetricLabel(value: string) {
+  if (value === "/blogs") return "Blog overview";
+  const slug = value.replace(/^\/blogs\//, "");
+  if (!slug || slug === value) return value;
+  return slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 function SummaryCard({
@@ -224,10 +397,12 @@ function RankedList({
   items,
   emptyText,
   kind,
+  formatLabel,
 }: {
   items: RankedMetric[];
   emptyText: string;
   kind?: "country" | "device";
+  formatLabel?: (value: string) => string;
 }) {
   if (items.length === 0) {
     return <p className="admin-ranked-empty">{emptyText}</p>;
@@ -240,7 +415,9 @@ function RankedList({
         <li key={`${item.label}-${index}`}>
           <span className="admin-ranked-list__index">{index + 1}</span>
           <span className="admin-ranked-list__label">
-            {displayMetricLabel(item.label, kind)}
+            {formatLabel
+              ? formatLabel(item.label)
+              : displayMetricLabel(item.label, kind)}
             <span
               aria-hidden="true"
               style={{ "--admin-bar": `${(item.value / maximum) * 100}%` } as CSSProperties}
@@ -546,34 +723,50 @@ function AccessCard({
 
 export default function AdminPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const previewMode =
+    import.meta.env.DEV && searchParams.get("preview") === "1";
   const requestedView = searchParams.get("view");
   const dashboardView = isDashboardView(requestedView)
     ? requestedView
     : null;
-  const [gateStage, setGateStage] = useState<GateStage>("loading");
-  const [adminAccess, setAdminAccess] = useState<AdminAccess | null>(null);
+  const [gateStage, setGateStage] = useState<GateStage>(
+    previewMode ? "ready" : "loading",
+  );
+  const [adminAccess, setAdminAccess] = useState<AdminAccess | null>(
+    previewMode ? previewAdminAccess : null,
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mfaCode, setMfaCode] = useState("");
   const [enrollment, setEnrollment] = useState<TotpEnrollment | null>(null);
-  const [authStatus, setAuthStatus] = useState<RequestStatus>("loading");
+  const [authStatus, setAuthStatus] = useState<RequestStatus>(
+    previewMode ? "idle" : "loading",
+  );
   const [authMessage, setAuthMessage] = useState("");
 
   const [range, setRange] = useState<AnalyticsRange>("7d");
-  const [analytics, setAnalytics] = useState<AnalyticsDashboard | null>(null);
+  const [analytics, setAnalytics] = useState<AnalyticsDashboard | null>(
+    previewMode ? getPreviewAnalytics("7d") : null,
+  );
   const [analyticsStatus, setAnalyticsStatus] =
     useState<RequestStatus>("idle");
   const [analyticsMessage, setAnalyticsMessage] = useState("");
 
-  const [contacts, setContacts] = useState<AdminContact[]>([]);
+  const [contacts, setContacts] = useState<AdminContact[]>(
+    previewMode ? previewContacts : [],
+  );
   const [contactCounts, setContactCounts] =
-    useState<ContactCounts>(emptyCounts);
+    useState<ContactCounts>(
+      previewMode ? { inbox: 4, unread: 2, read: 2 } : emptyCounts,
+    );
   const [contactFilter, setContactFilter] =
     useState<ContactFilter>("inbox");
   const [selectedContact, setSelectedContact] =
     useState<AdminContact | null>(null);
   const [contactPage, setContactPage] = useState(1);
-  const [totalContacts, setTotalContacts] = useState(0);
+  const [totalContacts, setTotalContacts] = useState(
+    previewMode ? previewContacts.length : 0,
+  );
   const [contactsStatus, setContactsStatus] =
     useState<RequestStatus>("idle");
   const [contactsMessage, setContactsMessage] = useState("");
@@ -636,6 +829,14 @@ export default function AdminPage() {
   }, [beginEnrollment]);
 
   useEffect(() => {
+    if (previewMode) {
+      setAdminAccess(previewAdminAccess);
+      setGateStage("ready");
+      setAuthStatus("idle");
+      setAuthMessage("");
+      return;
+    }
+
     let active = true;
 
     void (async () => {
@@ -658,12 +859,17 @@ export default function AdminPage() {
     return () => {
       active = false;
     };
-  }, [applyAccess]);
+  }, [applyAccess, previewMode]);
 
   const loadAnalytics = useCallback(async () => {
     if (gateStage !== "ready") return;
     setAnalyticsStatus("loading");
     setAnalyticsMessage("");
+    if (previewMode) {
+      setAnalytics(getPreviewAnalytics(range));
+      setAnalyticsStatus("idle");
+      return;
+    }
     try {
       setAnalytics(await fetchAdminAnalytics(range));
       setAnalyticsStatus("idle");
@@ -675,12 +881,27 @@ export default function AdminPage() {
           : "Website analytics could not be loaded.",
       );
     }
-  }, [gateStage, range]);
+  }, [gateStage, previewMode, range]);
 
   const loadContacts = useCallback(async () => {
     if (gateStage !== "ready") return;
     setContactsStatus("loading");
     setContactsMessage("");
+    if (previewMode) {
+      const matchingContacts = previewContacts.filter((contact) => {
+        if (contactFilter === "unread") return !contact.readAt;
+        if (contactFilter === "read") return Boolean(contact.readAt);
+        return true;
+      });
+      const pageStart = (contactPage - 1) * contactsPerPage;
+      setContacts(
+        matchingContacts.slice(pageStart, pageStart + contactsPerPage),
+      );
+      setTotalContacts(matchingContacts.length);
+      setContactCounts({ inbox: 4, unread: 2, read: 2 });
+      setContactsStatus("idle");
+      return;
+    }
     try {
       const [pageResult, counts] = await Promise.all([
         fetchAdminContacts(contactPage, contactsPerPage, contactFilter),
@@ -706,7 +927,7 @@ export default function AdminPage() {
           : "Contact enquiries could not be loaded.",
       );
     }
-  }, [contactFilter, contactPage, gateStage]);
+  }, [contactFilter, contactPage, gateStage, previewMode]);
 
   useEffect(() => {
     void loadAnalytics();
@@ -767,6 +988,16 @@ export default function AdminPage() {
 
   async function logout() {
     setAuthStatus("loading");
+    if (previewMode) {
+      setGateStage("signed-out");
+      setAdminAccess(null);
+      setAnalytics(null);
+      setContacts([]);
+      setSelectedContact(null);
+      setSearchParams({}, { replace: true });
+      setAuthStatus("idle");
+      return;
+    }
     await signOutAdmin().catch(() => undefined);
     setGateStage("signed-out");
     setAdminAccess(null);
@@ -786,6 +1017,24 @@ export default function AdminPage() {
     if (contact.readAt) return;
 
     setContactActionPending(true);
+    if (previewMode) {
+      const updated = {
+        ...contact,
+        readAt: new Date().toISOString(),
+        readBy: previewAdminAccess.email,
+      };
+      setSelectedContact(updated);
+      setContacts((current) =>
+        current.map((item) => item.id === updated.id ? updated : item)
+      );
+      setContactCounts((current) => ({
+        ...current,
+        unread: Math.max(0, current.unread - 1),
+        read: current.read + 1,
+      }));
+      setContactActionPending(false);
+      return;
+    }
     try {
       const updated = await setContactReadState(contact.id, true);
       setSelectedContact(updated);
@@ -812,6 +1061,25 @@ export default function AdminPage() {
     if (!selectedContact) return;
     setContactActionPending(true);
     setContactsMessage("");
+    if (previewMode) {
+      const wasRead = Boolean(selectedContact.readAt);
+      const updated = {
+        ...selectedContact,
+        readAt: wasRead ? null : new Date().toISOString(),
+        readBy: wasRead ? null : previewAdminAccess.email,
+      };
+      setSelectedContact(updated);
+      setContacts((current) =>
+        current.map((item) => item.id === updated.id ? updated : item)
+      );
+      setContactCounts((current) => ({
+        ...current,
+        unread: Math.max(0, current.unread + (wasRead ? 1 : -1)),
+        read: Math.max(0, current.read + (wasRead ? -1 : 1)),
+      }));
+      setContactActionPending(false);
+      return;
+    }
     try {
       const updated = await setContactReadState(
         selectedContact.id,
@@ -851,7 +1119,7 @@ export default function AdminPage() {
 
   function openDashboardView(view: DashboardView) {
     setSelectedContact(null);
-    setSearchParams({ view });
+    setSearchParams(previewMode ? { preview: "1", view } : { view });
     window.requestAnimationFrame(() => {
       window.scrollTo({ behavior: "smooth", top: 0 });
     });
@@ -859,7 +1127,7 @@ export default function AdminPage() {
 
   function returnToOverview() {
     setSelectedContact(null);
-    setSearchParams({});
+    setSearchParams(previewMode ? { preview: "1" } : {});
     window.requestAnimationFrame(() => {
       window.scrollTo({ behavior: "smooth", top: 0 });
     });
@@ -873,11 +1141,13 @@ export default function AdminPage() {
       : 0;
   const rangeLabel =
     rangeOptions.find((item) => item.key === range)?.label || "Selected range";
-  const topPage = analytics?.topPages[0];
-  const topCountry = analytics?.topCountries[0];
-  const topDevice = analytics?.topDevices[0];
-  const topReferrer = analytics?.topReferrers[0];
   const topBlogReferrer = analytics?.blogReferrers[0];
+  const topBlogPages = (analytics?.topPages || [])
+    .filter(
+      (item) =>
+        item.label === "/blogs" || item.label.startsWith("/blogs/"),
+    )
+    .slice(0, 5);
 
   return (
     <>
@@ -891,33 +1161,35 @@ export default function AdminPage() {
       <main className="admin-page">
         <section className="admin-shell">
           <div className="admin-topbar glass-panel">
-            <Link className="brand" to="/" aria-label="Drith Infra home">
+            <Link
+              className="brand brand--wordmark admin-brand"
+              to="/"
+              aria-label="Drith Infra home"
+            >
               <img
-                src={assets.brand.logo}
+                src={assets.brand.wordmark}
                 alt=""
-                width="42"
-                height="42"
+                width="220"
+                height="76"
                 loading="eager"
                 decoding="async"
               />
-              <span>
-                <strong>Drith Infra</strong>
-                <small>Admin 2.0</small>
-              </span>
             </Link>
 
             {gateStage === "ready" ? (
               <div className="admin-topbar__account">
                 <span>
                   <strong>{adminAccess?.email}</strong>
-                  <small>MFA verified</small>
+                  <small>
+                    {previewMode ? "Local preview · sample data" : "MFA verified"}
+                  </small>
                 </span>
                 <button
                   className="button button--secondary"
                   type="button"
                   onClick={() => void logout()}
                 >
-                  <span>Logout</span>
+                  <span>{previewMode ? "Exit preview" : "Logout"}</span>
                 </button>
               </div>
             ) : (
@@ -936,9 +1208,9 @@ export default function AdminPage() {
 
           {gateStage === "signed-out" ? (
             <AccessCard
-              eyebrow="Private access"
-              title="Selected administrators only."
-              body="Sign in with an allowlisted Supabase account. An authenticator-app code is required before private data can be read."
+              eyebrow="Admin portal"
+              title="Administration"
+              body="Authorized Drith Infra administrators only."
             >
               <form className="admin-auth-form" onSubmit={handleLogin}>
                 <label>
@@ -1134,46 +1406,30 @@ export default function AdminPage() {
 
               <div className="admin-contact-view__layout">
                 <section
-                  className="admin-contact-view__message"
-                  aria-labelledby="admin-message-heading"
+                  className="admin-contact-view__sender glass-panel"
+                  aria-labelledby="admin-sender-heading"
                 >
-                  <p className="admin-contact-view__label">Message</p>
-                  <h2 id="admin-message-heading">Enquiry details</h2>
-                  <div className="admin-contact-view__message-body">
-                    {selectedContact.message}
-                  </div>
+                  <header className="admin-contact-view__sender-header">
+                    <div>
+                      <p className="admin-contact-view__label">Sender details</p>
+                      <h2 id="admin-sender-heading">Contact and context</h2>
+                    </div>
+                    <div className="admin-contact-view__quick-actions">
+                      <a
+                        className="button button--primary"
+                        href={`mailto:${selectedContact.email}`}
+                      >
+                        <span>Reply by email</span>
+                      </a>
+                      <a
+                        className="button button--secondary"
+                        href={`tel:${selectedContact.phone}`}
+                      >
+                        <span>Call contact</span>
+                      </a>
+                    </div>
+                  </header>
 
-                  <div className="admin-contact-view__actions">
-                    <a
-                      className="button button--primary"
-                      href={`mailto:${selectedContact.email}`}
-                    >
-                      <span>Reply by email</span>
-                    </a>
-                    <a
-                      className="button button--secondary"
-                      href={`tel:${selectedContact.phone}`}
-                    >
-                      <span>Call contact</span>
-                    </a>
-                    <button
-                      className="button button--secondary"
-                      disabled={contactActionPending}
-                      type="button"
-                      onClick={() => void toggleSelectedReadState()}
-                    >
-                      <span>
-                        {selectedContact.readAt ? "Mark unread" : "Mark read"}
-                      </span>
-                    </button>
-                  </div>
-                </section>
-
-                <aside
-                  className="admin-contact-view__sidebar"
-                  aria-label="Contact information"
-                >
-                  <h2>Contact information</h2>
                   <dl className="admin-contact-view__meta">
                     <div>
                       <dt>Email</dt>
@@ -1191,10 +1447,6 @@ export default function AdminPage() {
                         </a>
                       </dd>
                     </div>
-                    <div>
-                      <dt>Preferred follow-up</dt>
-                      <dd>{selectedContact.preferredFollowUp}</dd>
-                    </div>
                     {selectedContact.organization ? (
                       <div>
                         <dt>Organization</dt>
@@ -1202,11 +1454,21 @@ export default function AdminPage() {
                       </div>
                     ) : null}
                     {selectedContact.role ? (
-                      <div><dt>Role</dt><dd>{selectedContact.role}</dd></div>
+                      <div>
+                        <dt>Role</dt>
+                        <dd>{selectedContact.role}</dd>
+                      </div>
                     ) : null}
                     {selectedContact.region ? (
-                      <div><dt>Region</dt><dd>{selectedContact.region}</dd></div>
+                      <div>
+                        <dt>Region</dt>
+                        <dd>{selectedContact.region}</dd>
+                      </div>
                     ) : null}
+                    <div>
+                      <dt>Preferred follow-up</dt>
+                      <dd>{selectedContact.preferredFollowUp}</dd>
+                    </div>
                     <div>
                       <dt>Evaluation</dt>
                       <dd>
@@ -1224,7 +1486,42 @@ export default function AdminPage() {
                       </dd>
                     </div>
                   </dl>
-                </aside>
+                </section>
+
+                <section
+                  className="admin-contact-view__message glass-panel"
+                  aria-labelledby="admin-message-heading"
+                >
+                  <header className="admin-contact-view__message-header">
+                    <div>
+                      <p className="admin-contact-view__label">Message</p>
+                      <h2 id="admin-message-heading">Enquiry message</h2>
+                    </div>
+                    <a
+                      className="admin-contact-view__email-link"
+                      href={`mailto:${selectedContact.email}`}
+                    >
+                      Reply to {selectedContact.name}
+                    </a>
+                  </header>
+
+                  <div className="admin-contact-view__message-body">
+                    <p>{selectedContact.message}</p>
+                  </div>
+
+                  <div className="admin-contact-view__actions">
+                    <button
+                      className="button button--secondary"
+                      disabled={contactActionPending}
+                      type="button"
+                      onClick={() => void toggleSelectedReadState()}
+                    >
+                      <span>
+                        {selectedContact.readAt ? "Mark unread" : "Mark read"}
+                      </span>
+                    </button>
+                  </div>
+                </section>
               </div>
             </article>
           ) : null}
@@ -1610,16 +1907,16 @@ export default function AdminPage() {
                   <button type="button" onClick={() => openDashboardView("traffic-overview")}>
                     Traffic
                   </button>
-                  <button type="button" onClick={() => openDashboardView("blog-overview")}>
-                    Blog
-                  </button>
                   <button type="button" onClick={() => openDashboardView("enquiries")}>
                     Enquiries
+                  </button>
+                  <button type="button" onClick={() => openDashboardView("blog-overview")}>
+                    Blog
                   </button>
                 </nav>
               </header>
 
-              <section className="admin-overview-board glass-panel">
+              <section className="admin-overview-stack">
                 <div className="admin-overview-toolbar">
                   <div className="admin-range-filter" aria-label="Analytics date range">
                     {rangeOptions.map((option) => (
@@ -1650,7 +1947,7 @@ export default function AdminPage() {
                   </p>
                 ) : null}
 
-                <div className="admin-overview-group">
+                <div className="admin-overview-card admin-overview-card--traffic glass-panel">
                   <header>
                     <div>
                       <p className="eyebrow">Website traffic</p>
@@ -1659,7 +1956,7 @@ export default function AdminPage() {
                     <small>{rangeLabel}</small>
                   </header>
                   <div
-                    className={`admin-mini-grid ${
+                    className={`admin-mini-grid admin-mini-grid--traffic ${
                       analyticsStatus === "loading" ? "is-loading" : ""
                     }`}
                   >
@@ -1676,65 +1973,59 @@ export default function AdminPage() {
                       onClick={() => openDashboardView("traffic-overview")}
                     />
                     <InsightCard
-                      label="Blog visits"
-                      value={analytics?.summary.blogViews || 0}
-                      note="Visits to /blogs"
-                      onClick={() => openDashboardView("blog-overview")}
-                    />
-                    <InsightCard
-                      label="Median load"
-                      value={formatDuration(analytics?.summary.medianLoadMs ?? null)}
-                      note="Typical navigation"
+                      label="Typical page load"
+                      value={formatLoadTime(analytics?.summary.medianLoadMs ?? null)}
+                      note="Time until page is ready"
                       onClick={() => openDashboardView("performance")}
                     />
                     <InsightCard
-                      label="p75 LCP"
-                      value={formatDuration(analytics?.summary.p75LcpMs ?? null)}
-                      note="Slower-quarter view"
+                      label="Main content visible"
+                      value={formatLoadTime(analytics?.summary.p75LcpMs ?? null)}
+                      note="For 75% of visits"
                       onClick={() => openDashboardView("performance")}
                     />
-                    <InsightCard
-                      label="Traffic trend"
-                      value={analytics?.summary.pageViews || 0}
-                      note="Open timeline"
-                      onClick={() => openDashboardView("traffic-trend")}
-                    />
-                    <InsightCard
-                      label="Top page"
-                      value={topPage?.label || "No data"}
-                      note={topPage ? `${topPage.value} views` : "Open ranking"}
-                      onClick={() => openDashboardView("top-pages")}
-                    />
-                    <InsightCard
-                      label="Top country"
-                      value={
-                        topCountry
-                          ? displayMetricLabel(topCountry.label, "country")
-                          : "No data"
-                      }
-                      note={topCountry ? `${topCountry.value} visits` : "Open countries"}
-                      onClick={() => openDashboardView("countries")}
-                    />
-                    <InsightCard
-                      label="Top device"
-                      value={
-                        topDevice
-                          ? displayMetricLabel(topDevice.label, "device")
-                          : "No data"
-                      }
-                      note={topDevice ? `${topDevice.value} visits` : "Open devices"}
-                      onClick={() => openDashboardView("devices")}
-                    />
-                    <InsightCard
-                      label="Top referrer"
-                      value={topReferrer?.label || "No data"}
-                      note={topReferrer ? `${topReferrer.value} visits` : "Open referrers"}
-                      onClick={() => openDashboardView("referrers")}
-                    />
+                  </div>
+                  <div className="admin-overview-traffic-layout">
+                    <article className="admin-overview-visual">
+                      <header>
+                        <div>
+                          <span>Traffic trend</span>
+                          <strong>Visits over time</strong>
+                        </div>
+                        <button
+                          className="admin-section-link"
+                          type="button"
+                          onClick={() => openDashboardView("traffic-trend")}
+                        >
+                          Details <span aria-hidden="true">→</span>
+                        </button>
+                      </header>
+                      <TrendChart points={analytics?.trend || []} />
+                    </article>
+
+                    <article className="admin-overview-ranking">
+                      <header>
+                        <div>
+                          <span>Most visited</span>
+                          <strong>Top 5 pages</strong>
+                        </div>
+                        <button
+                          className="admin-section-link"
+                          type="button"
+                          onClick={() => openDashboardView("top-pages")}
+                        >
+                          View all <span aria-hidden="true">→</span>
+                        </button>
+                      </header>
+                      <RankedList
+                        items={(analytics?.topPages || []).slice(0, 5)}
+                        emptyText="Page rankings will appear after traffic is recorded."
+                      />
+                    </article>
                   </div>
                 </div>
 
-                <div className="admin-overview-group">
+                <div className="admin-overview-card admin-overview-card--blog glass-panel">
                   <header>
                     <div>
                       <p className="eyebrow">Blog dashboard</p>
@@ -1744,7 +2035,7 @@ export default function AdminPage() {
                       View Blog <span aria-hidden="true">→</span>
                     </Link>
                   </header>
-                  <div className="admin-mini-grid">
+                  <div className="admin-mini-grid admin-mini-grid--blog">
                     <InsightCard
                       label="Blog visits"
                       value={analytics?.summary.blogViews || 0}
@@ -1758,18 +2049,6 @@ export default function AdminPage() {
                       onClick={() => openDashboardView("blog-overview")}
                     />
                     <InsightCard
-                      label="Traffic share"
-                      value={`${blogTrafficShare}%`}
-                      note="Of all page views"
-                      onClick={() => openDashboardView("blog-overview")}
-                    />
-                    <InsightCard
-                      label="Blog trend"
-                      value={analytics?.summary.blogViews || 0}
-                      note="Open timeline"
-                      onClick={() => openDashboardView("blog-trend")}
-                    />
-                    <InsightCard
                       label="Top referral"
                       value={topBlogReferrer?.label || "No data"}
                       note={
@@ -1780,9 +2059,22 @@ export default function AdminPage() {
                       onClick={() => openDashboardView("blog-referrers")}
                     />
                   </div>
+                  <article className="admin-overview-blog-ranking">
+                    <header>
+                      <div>
+                        <span>Reader interest</span>
+                        <strong>Most viewed blogs</strong>
+                      </div>
+                    </header>
+                    <RankedList
+                      items={topBlogPages}
+                      emptyText="Blog rankings will appear after readers visit published posts."
+                      formatLabel={displayBlogMetricLabel}
+                    />
+                  </article>
                 </div>
 
-                <div className="admin-overview-group">
+                <div className="admin-overview-card admin-overview-card--enquiries glass-panel">
                   <header>
                     <div>
                       <p className="eyebrow">Contact enquiries</p>

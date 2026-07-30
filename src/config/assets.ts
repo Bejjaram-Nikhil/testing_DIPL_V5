@@ -52,6 +52,13 @@ export const assets = {
     climate: `${LOCAL_ROOT}/images/sdgs/sdg-13-climate.webp`,
     water: `${LOCAL_ROOT}/images/sdgs/sdg-14-water.webp`,
   },
+  testing: {
+    ansysVelocitySection: `${LOCAL_ROOT}/images/testing/ansys-velocity-section.jpeg`,
+    ansysVelocityVolume: `${LOCAL_ROOT}/images/testing/ansys-velocity-volume.jpeg`,
+    breakwaterModel: `${LOCAL_ROOT}/images/testing/breakwater-scale-model.jpeg`,
+    modelUnits: `${LOCAL_ROOT}/images/testing/coastal-model-units.jpeg`,
+    modelSeries: `${LOCAL_ROOT}/images/testing/testing-model-series.jpeg`,
+  },
   articles: {
     engineer: "https://ovqxuakoekllsxzvnmvx.supabase.co/storage/v1/object/public/DIPL-tech-Galllery/blog/measanengineer.jpg",
     ceo: "https://ovqxuakoekllsxzvnmvx.supabase.co/storage/v1/object/public/DIPL-tech-Galllery/blog/measaceo.jpg",
@@ -59,6 +66,12 @@ export const assets = {
   videos: {
     homeHero: "https://ovqxuakoekllsxzvnmvx.supabase.co/storage/v1/object/public/DIPL-tech-Galllery/videos/Drith%20Infra%20Final.mp4",
     tatrakshakHero: "https://ovqxuakoekllsxzvnmvx.supabase.co/storage/v1/object/public/DIPL-tech-Galllery/videos/V1.mp4",
+    coastalErosion: [
+      "https://videos.pexels.com/video-files/28905669/12511826_1080_1920_25fps.mp4",
+      "https://videos.pexels.com/video-files/33307539/14185814_2160_3840_30fps.mp4",
+      "https://www.pexels.com/download/video/3725883/",
+      "https://www.pexels.com/download/video/19460174/",
+    ],
   },
 } as const;
 

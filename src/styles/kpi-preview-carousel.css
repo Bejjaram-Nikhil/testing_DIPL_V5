@@ -1,0 +1,73 @@
+.kpi-preview-dots {
+  display: none;
+}
+
+.kpi-preview-section .kpi-preview-card,
+.kpi-preview-section .kpi-preview-card:hover,
+.kpi-preview-section .kpi-preview-card:focus-within {
+  box-shadow:
+    0 2px 8px rgba(8, 47, 63, 0.025),
+    inset 0 1px rgba(255, 255, 255, 0.9);
+  transform: none;
+}
+
+.kpi-preview-section .kpi-preview-card .kpi-preview-card__body figure {
+  box-shadow:
+    0 2px 6px rgba(8, 47, 63, 0.025),
+    inset 0 1px rgba(255, 255, 255, 0.9);
+}
+
+@media (max-width: 720px) {
+  .kpi-preview-grid {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    gap: 16px;
+    margin: 0;
+    padding: 4px max(0px, calc((100% - min(82vw, 340px)) / 2)) 16px;
+    overflow-x: auto;
+    scroll-padding-inline: max(0px, calc((100% - min(82vw, 340px)) / 2));
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .kpi-preview-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .kpi-preview-grid > * {
+    flex: 0 0 min(82vw, 340px);
+    height: auto;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+  .kpi-preview-card,
+  .kpi-preview-card:hover {
+    min-height: 250px;
+    box-shadow: 0 2px 7px rgba(8, 47, 63, 0.025), inset 0 1px rgba(255, 255, 255, 0.9);
+  }
+
+  .kpi-preview-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 7px;
+  }
+
+  .kpi-preview-dots button {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(8, 47, 63, 0.2);
+    transition: width 0.25s ease, background 0.25s ease;
+  }
+
+  .kpi-preview-dots button.is-active {
+    width: 24px;
+    background: var(--ocean);
+  }
+}

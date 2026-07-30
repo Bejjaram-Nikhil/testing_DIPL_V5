@@ -13,7 +13,7 @@ const exploreIcons: Record<string, IconName> = {
 };
 
 const projectIcons: Record<string, IconName> = {
-  tatrakshak: "shield",
+  tatrakshak: "coast",
   tatchaitanya: "bulb",
   tatsagarmitra: "wave",
 };
@@ -94,7 +94,13 @@ export function Footer() {
             <Icon name="leaf" width="15" height="15" />
             What Matters The Most? Nature Matters!
           </span>
-          <span>Privacy · Accessibility · Responsible claims</span>
+          <nav className="footer-policy-links" aria-label="Website policies">
+            <Link to="/policies#privacy">Privacy</Link>
+            <span aria-hidden="true">·</span>
+            <Link to="/policies#accessibility">Accessibility</Link>
+            <span aria-hidden="true">·</span>
+            <Link to="/policies#responsible-claims">Responsible claims</Link>
+          </nav>
         </div>
       </div>
     </footer>

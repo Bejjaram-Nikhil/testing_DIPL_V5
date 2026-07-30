@@ -1,7 +1,7 @@
 import { ContactCta } from "../components/sections/ContactCta";
+import { BlogPreviewSection } from "../components/sections/BlogPreviewSection";
 import { KpiBand } from "../components/sections/KpiBand";
 import { Partners } from "../components/sections/Partners";
-import { RecognitionGrid } from "../components/sections/RecognitionGrid";
 import { Seo } from "../components/system/Seo";
 import { ButtonLink } from "../components/ui/ButtonLink";
 import { Reveal } from "../components/ui/Reveal";
@@ -25,7 +25,7 @@ export default function AboutPage() {
     <>
       <Seo
         title="About"
-        description="Learn about Drith Infra, its vision, mission, team, impact pillars, KPIs, and recognitions."
+        description="Learn about Drith Infra, its vision, mission, team, impact pillars, KPIs, and latest thinking."
         path="/about"
       />
 
@@ -105,7 +105,7 @@ export default function AboutPage() {
       </section>
 
       <KpiBand />
-      <RecognitionGrid />
+      <BlogPreviewSection />
       <Partners />
       <ContactCta />
     </>
