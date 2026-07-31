@@ -1,6 +1,7 @@
 import type { Project } from "../../types/content";
 import { ButtonLink } from "../ui/ButtonLink";
 import { Reveal } from "../ui/Reveal";
+import { OptimizedImage } from "../ui/OptimizedImage";
 
 export function ProjectCard({
   project,
@@ -20,7 +21,7 @@ export function ProjectCard({
   return (
     <Reveal className={`project-card project-card--${project.tone} ${compact ? "project-card--compact glass-panel" : ""} ${!compact && index % 2 ? "project-card--reverse" : ""}`.trim()}>
       <div className="project-card__image">
-        <img src={project.image} alt={project.imageAlt} width="900" height="620" loading="lazy" decoding="async" />
+        <OptimizedImage src={project.image} alt={project.imageAlt} loading="lazy" decoding="async" sizes="(max-width: 760px) 88vw, 46vw" />
       </div>
       <div className="project-card__copy">
         <p className="eyebrow">0{index + 1} · {project.eyebrow}</p>

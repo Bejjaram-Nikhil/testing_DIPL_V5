@@ -3,6 +3,7 @@ import { ContactCta } from "../components/sections/ContactCta";
 import { Seo } from "../components/system/Seo";
 import { StructuredData } from "../components/system/StructuredData";
 import { ButtonLink } from "../components/ui/ButtonLink";
+import { OptimizedImage } from "../components/ui/OptimizedImage";
 import { absoluteSiteUrl, siteUrl } from "../config/company";
 import { assets } from "../config/assets";
 import { journeyArticle } from "../data";
@@ -63,11 +64,12 @@ export default function ArticlePage() {
         </header>
 
         <figure>
-          <img
+          <OptimizedImage
             src={assets.projects.coast}
             alt="Coastal vegetation integrated with protective infrastructure"
             loading="lazy"
             decoding="async"
+            sizes="(max-width: 760px) 92vw, 900px"
           />
           <figcaption>
             An AI-generated concept image for visual representation, expressing the relationship between coast,

@@ -3,6 +3,7 @@ import { blogPosts } from "../../data";
 import { ButtonLink } from "../ui/ButtonLink";
 import { Reveal } from "../ui/Reveal";
 import { SectionHeading } from "../ui/SectionHeading";
+import { OptimizedImage } from "../ui/OptimizedImage";
 
 const latestPosts = blogPosts.slice(0, 3);
 
@@ -21,13 +22,12 @@ export function BlogPreviewSection() {
             <Reveal key={post.title} className="about-blog-card glass-panel" delay={index * 0.05}>
               <article>
                 <div className="about-blog-card__image">
-                  <img
+                  <OptimizedImage
                     src={post.image}
                     alt={post.alt}
-                    width="1200"
-                    height="760"
                     loading="lazy"
                     decoding="async"
+                    sizes="(max-width: 760px) 88vw, 31vw"
                   />
                 </div>
                 <div className="about-blog-card__copy">

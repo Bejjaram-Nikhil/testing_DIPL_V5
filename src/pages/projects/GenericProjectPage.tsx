@@ -1,6 +1,7 @@
 import { ContactCta } from "../../components/sections/ContactCta";
 import { Seo } from "../../components/system/Seo";
 import { Reveal } from "../../components/ui/Reveal";
+import { OptimizedImage } from "../../components/ui/OptimizedImage";
 import type { Project } from "../../types/content";
 
 export default function GenericProjectPage({ project }: { project: Project }) {
@@ -16,7 +17,7 @@ export default function GenericProjectPage({ project }: { project: Project }) {
             <p className="project-simple-hero__lead">{project.summary}</p>
           </Reveal>
           <Reveal className="project-simple-hero__media" delay={0.08}>
-            <img src={project.image} alt={project.imageAlt} loading="lazy" decoding="async" />
+            <OptimizedImage src={project.image} alt={project.imageAlt} loading="eager" decoding="async" fetchPriority="high" sizes="(max-width: 760px) 92vw, 48vw" />
           </Reveal>
         </div>
       </section>
@@ -61,4 +62,3 @@ function ProjectMetrics({ project }: { project: Project }) {
     </section>
   );
 }
-

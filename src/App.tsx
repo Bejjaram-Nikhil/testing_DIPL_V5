@@ -2,10 +2,10 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { SiteLayout } from "./components/layout/SiteLayout";
 import { RouteFallback } from "./components/system/RouteFallback";
+import HomePage from "./pages/HomePage";
 
 // Website route map. If a public URL changes, update it here and then update
 // matching links in src/data/site.ts, Header, Footer, and button links.
-const HomePage = lazy(() => import("./pages/HomePage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const ProjectsPage = lazy(() => import("./pages/ProjectsPage"));
 const ProjectDetailPage = lazy(() => import("./pages/ProjectDetailPage"));

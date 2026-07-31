@@ -29,6 +29,13 @@
   hyphens: none;
 }
 
+.initiative-hero--long-title .initiative-hero__copy h1 {
+  max-width: 100%;
+  font-size: clamp(2.6rem, 4.8vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
 .initiative-hero__statement {
   max-width: 660px;
   margin-bottom: 1.1rem;
@@ -524,6 +531,11 @@
   .initiative-hero__copy h1 {
     font-size: clamp(2.25rem, 11vw, 3.2rem);
     letter-spacing: -0.055em;
+  }
+
+  .initiative-hero--long-title .initiative-hero__copy h1 {
+    font-size: clamp(2rem, 9.5vw, 2.75rem);
+    letter-spacing: -0.045em;
   }
 
   .initiative-hero__statement {

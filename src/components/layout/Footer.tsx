@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { assets } from "../../config/assets";
 import { navigation, projects } from "../../data";
 import { Icon, type IconName } from "../ui/Icon";
+import { OptimizedImage } from "../ui/OptimizedImage";
 
 const exploreIcons: Record<string, IconName> = {
   "/": "home",
@@ -38,7 +39,7 @@ export function Footer() {
       <div className="shell site-footer__card glass-panel">
         <div className="footer-brand">
           <Link className="brand brand--wordmark" to="/" aria-label="Drith Infra home">
-            <img src={assets.brand.wordmark} alt="" width="220" height="76" loading="lazy" decoding="async" />
+            <OptimizedImage src={assets.brand.wordmark} alt="" width="220" height="76" loading="lazy" decoding="async" sizes="220px" />
           </Link>
           <p>Engineering coastal resilience with nature, evidence, and shared responsibility.</p>
           <a href="mailto:drithinfra.pvt@gmail.com">

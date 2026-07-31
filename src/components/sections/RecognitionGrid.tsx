@@ -4,6 +4,7 @@ import type { Recognition } from "../../types/content";
 import { Reveal } from "../ui/Reveal";
 import { Icon } from "../ui/Icon";
 import { SectionHeading } from "../ui/SectionHeading";
+import { OptimizedImage } from "../ui/OptimizedImage";
 import "../../styles/recognition.css";
 
 export function RecognitionGrid() {
@@ -62,13 +63,12 @@ export function RecognitionGrid() {
                           setOpenRecognition(item);
                         }}
                       >
-                        <img
+                        <OptimizedImage
                           src={item.image}
                           alt={item.imageAlt}
-                          width="1200"
-                          height="900"
                           loading="lazy"
                           decoding="async"
+                          sizes="(max-width: 760px) 88vw, 44vw"
                         />
                         <span>
                           <Icon name="expand" width="16" height="16" />
@@ -76,13 +76,12 @@ export function RecognitionGrid() {
                         </span>
                       </button>
                     ) : (
-                      <img
+                      <OptimizedImage
                         src={item.image}
                         alt={item.imageAlt}
-                        width="1200"
-                        height="900"
                         loading="lazy"
                         decoding="async"
+                        sizes="(max-width: 760px) 88vw, 44vw"
                       />
                     )}
                   </div>
@@ -124,11 +123,12 @@ export function RecognitionGrid() {
               <p className="eyebrow">{openRecognition.date}</p>
               <h2 id="recognition-lightbox-title">{openRecognition.title}</h2>
             </header>
-            <img
+            <OptimizedImage
               src={openRecognition.image}
               alt={openRecognition.imageAlt}
               loading="eager"
               decoding="async"
+              sizes="min(92vw, 1100px)"
             />
           </div>
         </div>

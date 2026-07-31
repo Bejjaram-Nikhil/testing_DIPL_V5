@@ -3,6 +3,7 @@ import { ContactCta } from "../../components/sections/ContactCta";
 import { Seo } from "../../components/system/Seo";
 import { Icon } from "../../components/ui/Icon";
 import { Reveal } from "../../components/ui/Reveal";
+import { OptimizedImage } from "../../components/ui/OptimizedImage";
 import { assets } from "../../config/assets";
 import type { Project } from "../../types/content";
 
@@ -75,7 +76,7 @@ export default function TatchaitanyaPage({ project }: { project: Project }) {
       <Seo title={project.name} description={project.seoDescription} path={`/projects/${project.slug}`} image={project.image} />
 
       <section className="section initiative-hero-section">
-        <div className="shell initiative-hero glass-panel">
+        <div className="shell initiative-hero initiative-hero--long-title glass-panel">
           <Reveal className="initiative-hero__copy">
             <p className="eyebrow">Coastal awareness · DRITH Infra</p>
             <h1>TATChaitanya</h1>
@@ -86,7 +87,7 @@ export default function TatchaitanyaPage({ project }: { project: Project }) {
             </p>
           </Reveal>
           <Reveal className="initiative-hero__media" delay={0.08}>
-            <img src={project.image} alt={project.imageAlt} loading="eager" decoding="async" />
+            <OptimizedImage src={project.image} alt={project.imageAlt} loading="eager" decoding="async" fetchPriority="high" sizes="(max-width: 760px) 92vw, 48vw" />
           </Reveal>
         </div>
       </section>
@@ -168,7 +169,7 @@ export default function TatchaitanyaPage({ project }: { project: Project }) {
                   controls
                   muted
                   playsInline
-                  preload="metadata"
+                  preload="none"
                   aria-label={`${video.title}: stock footage illustrating coastal erosion`}
                 >
                   <source src={video.src} type="video/mp4" />
@@ -244,4 +245,3 @@ export default function TatchaitanyaPage({ project }: { project: Project }) {
     </>
   );
 }
-

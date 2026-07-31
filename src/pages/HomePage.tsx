@@ -1,14 +1,19 @@
+import { lazy, Suspense } from "react";
 import { ButtonLink } from "../components/ui/ButtonLink";
 import { Reveal } from "../components/ui/Reveal";
 import { SectionHeading } from "../components/ui/SectionHeading";
-import { ContactCta } from "../components/sections/ContactCta";
-import { ComparisonShowcase } from "../components/sections/ComparisonShowcase";
-import { KpiBand } from "../components/sections/KpiBand";
-import { Partners } from "../components/sections/Partners";
-import { RecognitionGrid } from "../components/sections/RecognitionGrid";
 import { assets } from "../config/assets";
 import { projects } from "../data";
 import { Seo } from "../components/system/Seo";
+import { AdaptiveVideo } from "../components/ui/AdaptiveVideo";
+import { OptimizedImage } from "../components/ui/OptimizedImage";
+import { responsiveAssets } from "../config/assets";
+
+const ComparisonShowcase = lazy(() => import("../components/sections/ComparisonShowcase").then((module) => ({ default: module.ComparisonShowcase })));
+const RecognitionGrid = lazy(() => import("../components/sections/RecognitionGrid").then((module) => ({ default: module.RecognitionGrid })));
+const KpiBand = lazy(() => import("../components/sections/KpiBand").then((module) => ({ default: module.KpiBand })));
+const Partners = lazy(() => import("../components/sections/Partners").then((module) => ({ default: module.Partners })));
+const ContactCta = lazy(() => import("../components/sections/ContactCta").then((module) => ({ default: module.ContactCta })));
 
 export default function HomePage() {
   return (
@@ -20,21 +25,15 @@ export default function HomePage() {
 
       {/* Full-screen landing section. CSS classes starting with home-video-hero control the video, overlay, and text layout. */}
       <section className="home-video-hero">
-        <video
-          className="home-video-hero__media"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          poster={assets.projects.coast}
-          width="1920"
-          height="1080"
-          aria-hidden="true"
-          tabIndex={-1}
-        >
-          <source src={assets.videos.homeHero} type="video/mp4" />
-        </video>
+        <AdaptiveVideo
+          className="home-adaptive-video"
+          mediaClassName="home-video-hero__media"
+          poster={responsiveAssets.hero.home}
+          posterSizes="100vw"
+          sources={assets.videos.homeHero}
+          eagerPoster
+          playLabel="Play background video"
+        />
         <div className="home-video-hero__overlay" aria-hidden="true" />
         <div className="home-video-hero__content home-video-hero__content--animated shell">
           <h1 className="home-video-hero__wordmark">Drith Infra Private Limited</h1>
@@ -58,7 +57,7 @@ export default function HomePage() {
             {projects.map((project, index) => (
               <Reveal key={project.slug} className="principle-card glass-panel" delay={index * 0.06}>
                 <span>0{index + 1}</span>
-                <img className="principle-card__image" src={project.image} alt={project.imageAlt} width="1600" height="1000" loading="lazy" decoding="async" />
+                <OptimizedImage className="principle-card__image" src={project.image} alt={project.imageAlt} loading="lazy" decoding="async" sizes="(max-width: 760px) 88vw, 31vw" />
                 <h3>{project.shortName}</h3>
                 <p className="eyebrow">{project.eyebrow}</p>
                 <p>{project.summary}</p>
@@ -76,13 +75,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      <ComparisonShowcase />
+      <Suspense fallback={null}><ComparisonShowcase /></Suspense>
 
       {/* Founder card. Visual styling comes from founder-section and founder-card CSS classes. */}
       <section className="section founder-section">
         <div className="shell founder-card">
           <Reveal className="founder-card__portrait">
-            <img src={assets.team.abhishekGiri} alt="Abhishek Giri, founder and CEO of Drith Infra" width="600" height="600" loading="lazy" decoding="async" />
+            <OptimizedImage src={assets.team.abhishekGiri} alt="Abhishek Giri, founder and CEO of Drith Infra" loading="lazy" decoding="async" sizes="(max-width: 760px) 72vw, 360px" />
           </Reveal>
           <Reveal className="founder-card__copy" delay={0.08}>
             <p className="eyebrow">Founder and CEO</p>
@@ -107,11 +106,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <RecognitionGrid />
+      <Suspense fallback={null}><RecognitionGrid /></Suspense>
       {/* KPI evidence follows recognition milestones in the homepage story. */}
-      <KpiBand />
-      <Partners />
-      <ContactCta />
+      <Suspense fallback={null}><KpiBand /></Suspense>
+      <Suspense fallback={null}><Partners /></Suspense>
+      <Suspense fallback={null}><ContactCta /></Suspense>
     </>
   );
 }

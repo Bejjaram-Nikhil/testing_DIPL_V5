@@ -4,7 +4,8 @@ import { KpiBand } from "../../components/sections/KpiBand";
 import { Seo } from "../../components/system/Seo";
 import { Icon } from "../../components/ui/Icon";
 import { Reveal } from "../../components/ui/Reveal";
-import { assets } from "../../config/assets";
+import { AdaptiveVideo } from "../../components/ui/AdaptiveVideo";
+import { assets, responsiveAssets } from "../../config/assets";
 import type { Project } from "../../types/content";
 
 const tatrakshakRoles = [
@@ -68,12 +69,16 @@ const tatrakshakComputationalTesting = [
     description: "A controlled simulation view used to assess indicative velocity patterns around the model.",
     image: assets.testing.ansysVelocitySection,
     alt: "ANSYS velocity magnitude contour showing simulated flow around a coastal protection model",
+    width: 1019,
+    height: 429,
   },
   {
     title: "Three-dimensional flow study",
     description: "A wider simulation view used to assess flow behaviour around the geometry.",
     image: assets.testing.ansysVelocityVolume,
     alt: "Three-dimensional ANSYS velocity contour showing simulated flow around a coastal protection model",
+    width: 1057,
+    height: 741,
   },
 ] as const;
 
@@ -219,9 +224,14 @@ export default function TatrakshakPage({ project }: { project: Project }) {
             </p>
           </Reveal>
           <Reveal className="project-simple-hero__media project-simple-hero__media--video" delay={0.08}>
-            <video autoPlay muted loop playsInline preload="auto" poster={assets.projects.tatrakshakCoast}>
-              <source src={assets.videos.tatrakshakHero} type="video/mp4" />
-            </video>
+            <AdaptiveVideo
+              className="project-adaptive-video"
+              poster={responsiveAssets.hero.home}
+              posterSizes="(max-width: 760px) 92vw, 48vw"
+              sources={assets.videos.tatrakshakHero}
+              eagerPoster
+              playLabel="Play TATRakshak video"
+            />
           </Reveal>
         </div>
       </section>
@@ -282,7 +292,7 @@ export default function TatrakshakPage({ project }: { project: Project }) {
               {tatrakshakComputationalTesting.map((item, index) => (
                 <Reveal key={item.title} delay={index * 0.06}>
                   <figure className="tatrakshak-computational-card glass-panel">
-                    <img src={item.image} alt={item.alt} loading="lazy" decoding="async" />
+                    <img src={item.image} alt={item.alt} width={item.width} height={item.height} loading="lazy" decoding="async" />
                     <figcaption>
                       <span>0{index + 1}</span>
                       <div>
@@ -378,7 +388,7 @@ export default function TatrakshakPage({ project }: { project: Project }) {
               <div className="sdg-gallery" aria-label="Sustainable Development Goals">
                 {sdgGoals.map((goal) => (
                   <figure key={goal.id} className="sdg-gallery__item">
-                    <img src={goal.image} alt={`SDG ${goal.id}: ${goal.title}`} loading="lazy" decoding="async" />
+                    <img src={goal.image} alt={`SDG ${goal.id}: ${goal.title}`} width="300" height="300" loading="lazy" decoding="async" />
                     <figcaption>SDG {goal.id}</figcaption>
                   </figure>
                 ))}
@@ -394,4 +404,3 @@ export default function TatrakshakPage({ project }: { project: Project }) {
     </>
   );
 }
-

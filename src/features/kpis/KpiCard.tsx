@@ -1,5 +1,6 @@
 import { Reveal } from "../../components/ui/Reveal";
-import { getKpiImage } from "../../config/assets";
+import { OptimizedImage } from "../../components/ui/OptimizedImage";
+import { getKpiImage, getKpiResponsiveImage } from "../../config/assets";
 import type { kpiCards } from "./kpiCards";
 
 type KpiCardData = (typeof kpiCards)[number];
@@ -22,7 +23,7 @@ export function KpiCard({ index, isOpen, kpi, onToggle }: KpiCardProps) {
         <span className="kpi-flip-card__index">{String(index + 1).padStart(2, "0")}</span>
         <div className="kpi-flip-card__summary">
           <figure className="kpi-flip-card__visual">
-            <img src={getKpiImage(index)} alt={`${kpi.title} KPI illustration`} width="512" height="512" loading="lazy" decoding="async" />
+            <OptimizedImage asset={getKpiResponsiveImage(index)} src={getKpiImage(index)} alt={`${kpi.title} KPI illustration`} width="128" height="128" loading="lazy" decoding="async" sizes="128px" />
           </figure>
           <div className="kpi-flip-card__heading">
             <strong>{kpi.value}</strong>

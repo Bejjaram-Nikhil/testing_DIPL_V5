@@ -3,10 +3,11 @@ import { createRoot, hydrateRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./App";
 import { ErrorBoundary } from "./components/system/ErrorBoundary";
+import "./styles/fonts.css";
 import "./styles/index.css";
-import "./styles/performance.css";
 import "./styles/header.css";
 import "./styles/refinements.css";
+import "./styles/performance.css";
 
 // React mounts into <div id="root"> from index.html. Do not rename that id
 // unless this lookup is updated too.

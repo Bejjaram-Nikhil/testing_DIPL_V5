@@ -2,6 +2,7 @@ import { ContactCta } from "../../components/sections/ContactCta";
 import { KpiBand } from "../../components/sections/KpiBand";
 import { Seo } from "../../components/system/Seo";
 import { Reveal } from "../../components/ui/Reveal";
+import { OptimizedImage } from "../../components/ui/OptimizedImage";
 import type { Project } from "../../types/content";
 
 const tatsagarmitraFocus = [
@@ -29,7 +30,7 @@ export default function TatsagarmitraPage({ project }: { project: Project }) {
       <Seo title={project.name} description={project.seoDescription} path={`/projects/${project.slug}`} image={project.image} />
 
       <section className="section initiative-hero-section">
-        <div className="shell initiative-hero initiative-hero--sagarmitra glass-panel">
+        <div className="shell initiative-hero initiative-hero--sagarmitra initiative-hero--long-title glass-panel">
           <Reveal className="initiative-hero__copy">
             <p className="eyebrow">Coastal stewardship · DRITH Infra</p>
             <h1>TATSagarMitra</h1>
@@ -40,7 +41,7 @@ export default function TatsagarmitraPage({ project }: { project: Project }) {
             </p>
           </Reveal>
           <Reveal className="initiative-hero__media" delay={0.08}>
-            <img src={project.image} alt={project.imageAlt} loading="eager" decoding="async" />
+            <OptimizedImage src={project.image} alt={project.imageAlt} loading="eager" decoding="async" fetchPriority="high" sizes="(max-width: 760px) 92vw, 48vw" />
           </Reveal>
         </div>
       </section>

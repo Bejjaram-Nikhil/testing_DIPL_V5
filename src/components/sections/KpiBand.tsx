@@ -2,7 +2,8 @@ import { useEffect, useRef, useState, type UIEvent } from "react";
 import { ButtonLink } from "../ui/ButtonLink";
 import { Reveal } from "../ui/Reveal";
 import { SectionHeading } from "../ui/SectionHeading";
-import { getKpiImage } from "../../config/assets";
+import { OptimizedImage } from "../ui/OptimizedImage";
+import { getKpiImage, getKpiResponsiveImage } from "../../config/assets";
 import "../../styles/kpi-preview-carousel.css";
 
 // Homepage-only KPI preview. The full KPI page has the expanded 18-card version.
@@ -159,7 +160,7 @@ export function KpiBand({ compactHeading = false }: KpiBandProps = {}) {
                 </div>
                 <div className="kpi-preview-card__body">
                   <figure>
-                    <img src={getKpiImage(index)} alt="" width="512" height="512" loading="lazy" decoding="async" />
+                    <OptimizedImage asset={getKpiResponsiveImage(index)} src={getKpiImage(index)} alt="" width="128" height="128" loading="lazy" decoding="async" sizes="128px" />
                   </figure>
                   <div className={`kpi-preview-card__metric ${kpi.value.length > 6 ? "kpi-preview-card__metric--compact" : ""}`.trim()}>
                     <strong>{kpi.value}</strong>

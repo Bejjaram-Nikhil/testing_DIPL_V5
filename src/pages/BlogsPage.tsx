@@ -2,6 +2,7 @@ import { ContactCta } from "../components/sections/ContactCta";
 import { Seo } from "../components/system/Seo";
 import { ButtonLink } from "../components/ui/ButtonLink";
 import { Reveal } from "../components/ui/Reveal";
+import { OptimizedImage } from "../components/ui/OptimizedImage";
 import { blogPosts } from "../data";
 
 export default function BlogsPage() {
@@ -19,7 +20,7 @@ export default function BlogsPage() {
             {blogPosts.map((post, index) => (
               <Reveal key={post.title} className="blog-card glass-panel" delay={index * 0.06}>
                 <div className="blog-card__image">
-                  <img src={post.image} alt={post.alt} width="1600" height="1000" loading="lazy" decoding="async" />
+                  <OptimizedImage src={post.image} alt={post.alt} loading="lazy" decoding="async" sizes="(max-width: 760px) 88vw, 42vw" />
                 </div>
                 <div className="blog-card__copy">
                   <p className="eyebrow">{post.category}</p>

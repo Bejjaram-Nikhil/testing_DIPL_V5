@@ -8,6 +8,9 @@ import { StructuredData } from "../components/system/StructuredData";
 import { ButtonLink } from "../components/ui/ButtonLink";
 import { Reveal } from "../components/ui/Reveal";
 import { SectionHeading } from "../components/ui/SectionHeading";
+import { DeferredYouTube } from "../components/ui/DeferredYouTube";
+import { OptimizedImage } from "../components/ui/OptimizedImage";
+import { responsiveAssets } from "../config/assets";
 import { companyProfile, siteUrl } from "../config/company";
 import { team } from "../data";
 import "../styles/company-facts.css";
@@ -169,12 +172,10 @@ export default function AboutPage() {
 
           <Reveal className="about-video-card glass-panel" delay={0.08}>
             <span>Startup Video</span>
-            <iframe
-              src="https://www.youtube.com/embed/CwxaaeHy6Iw?rel=0&modestbranding=1&playsinline=1"
+            <DeferredYouTube
+              videoId="CwxaaeHy6Iw"
               title="Drith Infra startup video"
-              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              loading="lazy"
+              preview={responsiveAssets.about.videoPreview}
             />
           </Reveal>
         </div>
@@ -191,7 +192,7 @@ export default function AboutPage() {
             {team.map((member, index) => (
               <Reveal key={member.name} className="team-card glass-panel" delay={index * 0.05}>
                 {member.image ? (
-                  <img src={member.image} alt={member.name} width="600" height="600" loading="lazy" decoding="async" />
+                  <OptimizedImage src={member.image} alt={member.name} loading="lazy" decoding="async" sizes="(max-width: 760px) 72vw, 260px" />
                 ) : (
                   <div className="team-card__initials" aria-hidden="true">
                     {member.name.split(" ").map((part) => part[0]).join("").slice(0, 2)}
