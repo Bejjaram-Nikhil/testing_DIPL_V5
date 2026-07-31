@@ -36,7 +36,11 @@ export function RecognitionGrid() {
 
   return (
     <>
-      <section className="section recognition-section">
+      <section
+        id="recognitions"
+        className="section recognition-section"
+        aria-label="Drith Infra recognitions and credential evidence"
+      >
         <div className="shell">
           <SectionHeading
             eyebrow="Milestones of recognition"

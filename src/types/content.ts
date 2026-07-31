@@ -1,4 +1,6 @@
-export type ProjectSlug = "tatrakshak" | "tatchaitanya" | "tatsagarmitra";
+// Project slugs are validated by the auto-discovery registry at runtime.
+// Keeping this open-ended means a new project does not require a type edit.
+export type ProjectSlug = string;
 
 export interface Project {
   slug: ProjectSlug;

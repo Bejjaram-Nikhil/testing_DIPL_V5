@@ -1,76 +1,43 @@
-import { assets } from "../config/assets";
 import type { Project } from "../types/content";
 
-// Slugs are public URL identifiers and must remain stable.
-export const projects: readonly Project[] = [
-  {
-    slug: "tatrakshak",
-    eyebrow: "Protection",
-    name: "Project TATRakshak",
-    shortName: "TATRakshak",
-    subtitle: "Nature-integrated coastal protection",
-    summary: "Where we know engineers cant stop disasters, but we can reduce their impact through our knowledge, Innovation and Counsciousness",
-    image: assets.projects.coast,
-    imageAlt: "Concept rendering of vegetated modular coastal armour protecting a shoreline",
-    tone: "ocean",
-    metrics: [
-      { value: "Protection", label: "Reduces erosion and wave impact." },
-      { value: "Carbon", label: "Supports coastal carbon capture." },
-      { value: "Regeneration", label: "Enables natural ecosystem recovery." },
-      { value: "Resilience", label: "Strengthens long-term coastal defence." },
-    ],
-    capabilities: [
-      { title: "Coastal protection", description: "Modular eco-armour units reduce direct shoreline impact while adapting to local wave climates." },
-      { title: "Ecological regeneration", description: "Planting chambers, sediment capture, and root anchoring help coastal vegetation re-establish." },
-      { title: "Circular lifecycle", description: "Units are designed for repair, relocation, and redeployment instead of demolition and replacement." },
-    ],
-    seoDescription: "Discover TATRakshak, Drith Infra's modular nature-aligned coastal protection system for wave attenuation and mangrove regeneration.",
-  },
-  {
-    slug: "tatchaitanya",
-    eyebrow: "Awareness",
-    name: "Project TATChaitanya",
-    shortName: "TATChaitanya",
-    subtitle: "Coastal awareness and knowledge",
-    summary: "Understand and create awareness about the coast.",
-    image: assets.projects.chaitanya,
-    imageAlt: "Community learning session about nature and coastal stewardship",
-    tone: "forest",
-    metrics: [
-      { value: "1 cause", label: "building awareness" },
-      { value: "3 areas", label: "Awareness • Learning • Stewardship" },
-      { value: "1 outcome", label: "shared sustainability practice" },
-      { value: "Open", label: "to institutions and communities" },
-    ],
-    capabilities: [
-      { title: "Awareness", description: "Make coastal risk, erosion, and ecosystem relationships legible to non-specialists." },
-      { title: "Learning", description: "Translate Drith Infra's research into workshops, field learning, and institutional programs." },
-      { title: "Stewardship", description: "Equip communities to take part in long-term care, observation, and resilience planning." },
-    ],
-    seoDescription: "Explore TATChaitanya, DRITH Infra's coastal awareness, education and knowledge initiative for communities, students, institutions and public stakeholders.",
-  },
-  {
-    slug: "tatsagarmitra",
-    eyebrow: "Restoration",
-    name: "Project TATSagarMitra",
-    shortName: "TATSagarMitra",
-    subtitle: "Coastal stewardship and action",
-    summary: "Act together to care for and protect the coast.",
-    image: assets.projects.sagarMitra,
-    imageAlt: "Coastal restoration worker collecting plastic waste near mangroves",
-    tone: "sand",
-    metrics: [
-      { value: "Restore", label: "shorelines and coastal habitat" },
-      { value: "Sustain", label: "community-led stewardship" },
-      { value: "Divert", label: "plastic away from ocean pathways" },
-      { value: "Balance", label: "ecological systems over time" },
-      
-    ],
-    capabilities: [
-      { title: "Responsible recovery", description: "Coordinate collection and traceable diversion of plastic in coastal catchments." },
-      { title: "Material circularity", description: "Explore engineered applications that keep recovered material in accountable value chains." },
-      { title: "Community action", description: "Connect practitioners, partners, and coastal residents around shared restoration outcomes." },
-    ],
-    seoDescription: "Learn about TATSagarMitra, DRITH Infra's evolving coastal stewardship and collective-action initiative.",
-  },
-];
+interface ProjectModule {
+  default: Project;
+  projectOrder?: number;
+}
+
+const projectModules = import.meta.glob<ProjectModule>("./projects/*.ts", { eager: true });
+
+const projectEntries = Object.entries(projectModules)
+  .map(([filePath, module]) => {
+    const fileSlug = filePath.split("/").pop()?.replace(/\.ts$/, "");
+
+    if (!fileSlug || fileSlug !== module.default.slug) {
+      throw new Error(`Project file "${filePath}" must match its exported slug "${module.default.slug}".`);
+    }
+
+    return {
+      order: module.projectOrder ?? Number.MAX_SAFE_INTEGER,
+      project: module.default,
+    };
+  })
+  .sort((left, right) => left.order - right.order || left.project.slug.localeCompare(right.project.slug));
+
+const seenSlugs = new Set<string>();
+
+for (const { project } of projectEntries) {
+  if (seenSlugs.has(project.slug)) {
+    throw new Error(`Duplicate project slug "${project.slug}". Each project must have a unique URL slug.`);
+  }
+
+  seenSlugs.add(project.slug);
+}
+
+/**
+ * Automatically discovered project catalogue.
+ *
+ * Add or remove a file in src/data/projects and every public project list updates.
+ * A matching custom page at src/pages/projects/<slug>.tsx is loaded automatically;
+ * projects without one use the reusable generic detail page.
+ */
+export const projects: readonly Project[] = projectEntries.map(({ project }) => project);
+

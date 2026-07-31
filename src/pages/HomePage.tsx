@@ -10,17 +10,6 @@ import { assets } from "../config/assets";
 import { projects } from "../data";
 import { Seo } from "../components/system/Seo";
 
-const homepageProjectOrder = ["tatchaitanya", "tatrakshak", "tatsagarmitra"] as const;
-const homepageProjects = homepageProjectOrder.map((slug) => projects.find((project) => project.slug === slug)!);
-const originalHomepageProjectSummaries: Record<(typeof homepageProjectOrder)[number], string> = {
-  tatchaitanya:
-    "Where awareness is the first line of defence, empowering communities to protect nature before disasters even begin.",
-  tatrakshak:
-    "Where we know engineers cant stop disasters, but we can reduce their impact through our knowledge, Innovation and Counsciousness",
-  tatsagarmitra:
-    "Where waste becomes wisdom and people unite with purpose, coastlines heal and balance is restored naturally.",
-};
-
 export default function HomePage() {
   return (
     <>
@@ -61,18 +50,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Homepage project cards are generated from the projects array in src/data/site.ts. */}
+      {/* Homepage project cards are generated from the auto-discovered project modules. */}
       <section className="section principles-section">
         <div className="shell">
           <SectionHeading title="Our Projects" />
           <div className="principle-grid">
-            {homepageProjects.map((project, index) => (
+            {projects.map((project, index) => (
               <Reveal key={project.slug} className="principle-card glass-panel" delay={index * 0.06}>
                 <span>0{index + 1}</span>
                 <img className="principle-card__image" src={project.image} alt={project.imageAlt} width="1600" height="1000" loading="lazy" decoding="async" />
                 <h3>{project.shortName}</h3>
                 <p className="eyebrow">{project.eyebrow}</p>
-                <p>{originalHomepageProjectSummaries[project.slug as keyof typeof originalHomepageProjectSummaries]}</p>
+                <p>{project.summary}</p>
                 <ButtonLink
                   to={`/projects/${project.slug}`}
                   variant="text"

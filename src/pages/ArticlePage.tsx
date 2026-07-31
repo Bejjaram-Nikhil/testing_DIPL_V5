@@ -1,7 +1,9 @@
 import { Navigate, useParams } from "react-router-dom";
 import { ContactCta } from "../components/sections/ContactCta";
 import { Seo } from "../components/system/Seo";
+import { StructuredData } from "../components/system/StructuredData";
 import { ButtonLink } from "../components/ui/ButtonLink";
+import { absoluteSiteUrl, siteUrl } from "../config/company";
 import { assets } from "../config/assets";
 import { journeyArticle } from "../data";
 
@@ -12,14 +14,41 @@ export default function ArticlePage() {
     return <Navigate to="/blogs" replace />;
   }
 
+  const articlePath = `/blogs/${journeyArticle.slug}`;
+  const articleUrl = absoluteSiteUrl(articlePath);
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${articleUrl}#article`,
+    headline: journeyArticle.title,
+    description: journeyArticle.dek,
+    image: absoluteSiteUrl(assets.projects.coast),
+    datePublished: journeyArticle.publishedAtISO,
+    dateModified: journeyArticle.publishedAtISO,
+    inLanguage: "en-IN",
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": articleUrl,
+    },
+    author: {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: journeyArticle.author,
+      url: absoluteSiteUrl(journeyArticle.authorUrl),
+    },
+    publisher: { "@id": `${siteUrl}/#organization` },
+    about: ["coastal resilience", "mangrove regeneration", "nature-aligned coastal infrastructure"],
+  };
+
   return (
     <>
       <Seo
         title={journeyArticle.title}
         description={journeyArticle.dek}
-        path={`/blogs/${journeyArticle.slug}`}
+        path={articlePath}
         type="article"
       />
+      <StructuredData id="drith-article-schema" data={articleSchema} />
 
       <article className="article shell">
         <header>
@@ -27,6 +56,7 @@ export default function ArticlePage() {
           <h1>{journeyArticle.title}</h1>
           <p className="article__dek">{journeyArticle.dek}</p>
           <div>
+            <a href={journeyArticle.authorUrl}>By {journeyArticle.author}</a>
             <span>{journeyArticle.publishedAt}</span>
             <span>{journeyArticle.readingTime}</span>
           </div>

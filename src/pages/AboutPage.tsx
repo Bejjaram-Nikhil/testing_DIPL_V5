@@ -1,12 +1,16 @@
+import { Link } from "react-router-dom";
 import { ContactCta } from "../components/sections/ContactCta";
 import { BlogPreviewSection } from "../components/sections/BlogPreviewSection";
 import { KpiBand } from "../components/sections/KpiBand";
 import { Partners } from "../components/sections/Partners";
 import { Seo } from "../components/system/Seo";
+import { StructuredData } from "../components/system/StructuredData";
 import { ButtonLink } from "../components/ui/ButtonLink";
 import { Reveal } from "../components/ui/Reveal";
 import { SectionHeading } from "../components/ui/SectionHeading";
+import { companyProfile, siteUrl } from "../config/company";
 import { team } from "../data";
+import "../styles/company-facts.css";
 
 // Cause and Enactment cards in the Vision & Mission section.
 const missionCards = [
@@ -21,13 +25,73 @@ const missionCards = [
 ] as const;
 
 export default function AboutPage() {
+  const credentialFacts: ReadonlyArray<{
+    label: string;
+    value: string;
+    note: string;
+    href?: string;
+    id?: string;
+  }> = [
+    {
+      label: "Legal entity",
+      value: companyProfile.name,
+      note: "Indian private limited company",
+    },
+    {
+      label: "Founder and leadership",
+      value: companyProfile.founder.name,
+      note: companyProfile.founder.role,
+      href: companyProfile.founder.linkedin,
+      id: "founder",
+    },
+    {
+      label: "Quality certification",
+      value: companyProfile.certifications[0],
+      note: "Company certification",
+    },
+    {
+      label: "Government recognition",
+      value: companyProfile.certifications[1],
+      note: "Government of India Startup India initiative",
+      href: "/#recognitions",
+    },
+    {
+      label: "Innovation recognition",
+      value: companyProfile.award,
+      note: "Building Bharat Sampark Innovation Boot Camp",
+      href: "/#recognitions",
+    },
+    {
+      label: "Business location",
+      value: companyProfile.location,
+      note: "Company contact location",
+    },
+  ];
+
+  const aboutSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "@id": `${siteUrl}/about#about-page`,
+    url: `${siteUrl}/about`,
+    name: `About ${companyProfile.name}`,
+    description: companyProfile.description,
+    inLanguage: "en-IN",
+    mainEntity: { "@id": `${siteUrl}/#organization` },
+    about: [
+      { "@id": `${siteUrl}/#organization` },
+      { "@id": `${siteUrl}/about#founder` },
+    ],
+  };
+
   return (
     <>
       <Seo
         title="About"
-        description="Learn about Drith Infra, its vision, mission, team, impact pillars, KPIs, and latest thinking."
+        description="Learn about Drith Infra Private Limited, founder and CEO Abhishek Giri, its ISO 9001:2015 certification, DPIIT recognition, team, and nature-aligned coastal infrastructure projects."
         path="/about"
+        image={companyProfile.founder.image}
       />
+      <StructuredData id="drith-about-schema" data={aboutSchema} />
 
       {/* Vision & Mission section. Text comes from missionCards above. */}
       <section className="section about-mission-section">
@@ -40,6 +104,53 @@ export default function AboutPage() {
                 <p>{card.body}</p>
               </article>
             ))}
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section company-profile-section" aria-labelledby="company-profile-title">
+        <div className="shell">
+          <Reveal className="company-profile glass-panel">
+            <header className="company-profile__header">
+              <p className="eyebrow">Company profile &amp; credentials</p>
+              <h2 id="company-profile-title">A founder-led business built around coastal resilience.</h2>
+              <p>
+                {companyProfile.name} is based in Pimpri-Chinchwad, Pune, and works across coastline
+                engineering, climate resilience, coastal awareness, and community-led ecological restoration.
+                The facts below connect the company, its founder, its credentials, and its public initiatives in
+                one verifiable profile.
+              </p>
+            </header>
+
+            <dl className="company-profile__facts">
+              {credentialFacts.map((fact) => (
+                <div id={fact.id} key={fact.label} className="company-profile__fact">
+                  <dt>{fact.label}</dt>
+                  <dd>
+                    {fact.href?.startsWith("/") ? (
+                      <Link to={fact.href}>{fact.value}</Link>
+                    ) : fact.href ? (
+                      <a href={fact.href} target="_blank" rel="noopener noreferrer">{fact.value}</a>
+                    ) : (
+                      fact.value
+                    )}
+                  </dd>
+                  <p>{fact.note}</p>
+                </div>
+              ))}
+            </dl>
+
+            <div className="company-profile__initiatives">
+              <div>
+                <p className="eyebrow">Core initiatives</p>
+                <nav aria-label="Drith Infra initiatives">
+                  <Link to="/projects/tatchaitanya">TATChaitanya</Link>
+                  <Link to="/projects/tatrakshak">TATRakshak</Link>
+                  <Link to="/projects/tatsagarmitra">TATSagarMitra</Link>
+                </nav>
+              </div>
+              <ButtonLink to="/#recognitions" variant="secondary">View recognition evidence</ButtonLink>
+            </div>
           </Reveal>
         </div>
       </section>

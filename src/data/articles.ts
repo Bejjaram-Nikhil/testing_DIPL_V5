@@ -5,7 +5,10 @@ export const journeyArticle = {
   category: "Drith Infra Journey",
   title: "The awareness that started Drith Infra",
   dek: "Before there was a company or a product, there was a question: can coastal protection defend people while helping nature recover?",
+  author: "Drith Infra",
+  authorUrl: "/about",
   publishedAt: "26 May 2026",
+  publishedAtISO: "2026-05-26",
   readingTime: "5 min read",
   sections: [
     {
@@ -44,7 +47,7 @@ export const blogPosts: readonly BlogPost[] = [
     alt: "Nature-integrated coastal protection supporting a living shoreline",
     author: "Drith Infra",
     date: journeyArticle.publishedAt,
-    publishedAtISO: "2026-05-26",
+    publishedAtISO: journeyArticle.publishedAtISO,
     time: journeyArticle.readingTime,
     place: "Pune, India",
     category: journeyArticle.category,
