@@ -40,6 +40,10 @@ export type TotpEnrollment = {
   uri: string;
 };
 
+const adminTotpFriendlyName = "Drith Infra Admin";
+const pendingEnrollmentStoragePrefix = "drith-admin-totp-enrollment";
+const enrollmentRequests = new Map<string, Promise<TotpEnrollment>>();
+
 type SupabaseContactRow = {
   id: string;
   name: string;
@@ -145,6 +149,77 @@ function asNullableNumber(value: unknown) {
 
 function normalizeAssuranceLevel(value: unknown): "aal1" | "aal2" | null {
   return value === "aal1" || value === "aal2" ? value : null;
+}
+
+function getEnrollmentStorage() {
+  if (typeof window === "undefined") return null;
+
+  try {
+    return window.sessionStorage;
+  } catch {
+    return null;
+  }
+}
+
+function enrollmentStorageKey(userId: string) {
+  return `${pendingEnrollmentStoragePrefix}:${userId}`;
+}
+
+function isTotpEnrollment(value: unknown): value is TotpEnrollment {
+  if (!value || typeof value !== "object") return false;
+  const enrollment = value as Record<string, unknown>;
+
+  return ["factorId", "qrCode", "secret", "uri"].every(
+    (key) => typeof enrollment[key] === "string" && enrollment[key].length > 0,
+  );
+}
+
+function readStoredTotpEnrollment(userId: string) {
+  const storage = getEnrollmentStorage();
+  if (!storage) return null;
+
+  const key = enrollmentStorageKey(userId);
+
+  try {
+    const stored = storage.getItem(key);
+    if (!stored) return null;
+    const parsed: unknown = JSON.parse(stored);
+    if (isTotpEnrollment(parsed)) return parsed;
+  } catch {
+    // A malformed or inaccessible entry should never block MFA recovery.
+  }
+
+  try {
+    storage.removeItem(key);
+  } catch {
+    // Storage may have become unavailable between reads.
+  }
+  return null;
+}
+
+function storeTotpEnrollment(userId: string, enrollment: TotpEnrollment) {
+  const storage = getEnrollmentStorage();
+  if (!storage) return;
+
+  try {
+    storage.setItem(
+      enrollmentStorageKey(userId),
+      JSON.stringify(enrollment),
+    );
+  } catch {
+    // The flow still works without refresh recovery when storage is unavailable.
+  }
+}
+
+function clearStoredTotpEnrollment(userId: string) {
+  const storage = getEnrollmentStorage();
+  if (!storage) return;
+
+  try {
+    storage.removeItem(enrollmentStorageKey(userId));
+  } catch {
+    // A storage cleanup failure must not block authentication.
+  }
 }
 
 function rankedMetrics(value: unknown): RankedMetric[] {
@@ -256,6 +331,9 @@ export async function getAdminAccess(): Promise<AdminAccess> {
   const verifiedFactor = factorList.data.totp.find(
     (factor) => factor.status === "verified",
   );
+  if (verifiedFactor) {
+    clearStoredTotpEnrollment(session.user.id);
+  }
 
   return {
     authenticated: true,
@@ -278,32 +356,101 @@ export async function signInAdmin(email: string, password: string) {
 }
 
 export async function signOutAdmin() {
-  const { error } = await getSupabaseClient().auth.signOut({ scope: "local" });
+  const supabase = getSupabaseClient();
+  const { data: sessionData } = await supabase.auth.getSession();
+  if (sessionData.session?.user.id) {
+    clearStoredTotpEnrollment(sessionData.session.user.id);
+  }
+
+  const { error } = await supabase.auth.signOut({ scope: "local" });
   if (error) throw error;
 }
 
-export async function enrollAdminTotp(): Promise<TotpEnrollment> {
-  const { data, error } = await getSupabaseClient().auth.mfa.enroll({
+async function createOrRestoreAdminTotpEnrollment(
+  userId: string,
+): Promise<TotpEnrollment> {
+  const supabase = getSupabaseClient();
+  const { data: factorData, error: factorError } =
+    await supabase.auth.mfa.listFactors();
+  if (factorError) throw factorError;
+
+  const pendingFactors = factorData.all.filter(
+    (factor) =>
+      factor.factor_type === "totp" &&
+      factor.status === "unverified" &&
+      factor.friendly_name === adminTotpFriendlyName,
+  );
+  const storedEnrollment = readStoredTotpEnrollment(userId);
+  if (
+    storedEnrollment &&
+    pendingFactors.some((factor) => factor.id === storedEnrollment.factorId)
+  ) {
+    return storedEnrollment;
+  }
+
+  clearStoredTotpEnrollment(userId);
+
+  for (const factor of pendingFactors) {
+    const { error } = await supabase.auth.mfa.unenroll({
+      factorId: factor.id,
+    });
+    if (error) throw error;
+  }
+
+  const { data, error } = await supabase.auth.mfa.enroll({
     factorType: "totp",
-    friendlyName: "Drith Infra Admin",
+    friendlyName: adminTotpFriendlyName,
   });
   if (error) throw error;
 
-  return {
+  const enrollment = {
     factorId: data.id,
     qrCode: data.totp.qr_code,
     secret: data.totp.secret,
     uri: data.totp.uri,
   };
+  storeTotpEnrollment(userId, enrollment);
+  return enrollment;
+}
+
+export async function enrollAdminTotp(): Promise<TotpEnrollment> {
+  const supabase = getSupabaseClient();
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError) throw userError;
+  if (!userData.user) {
+    throw new Error("Administrator session is unavailable.");
+  }
+
+  const userId = userData.user.id;
+  const activeRequest = enrollmentRequests.get(userId);
+  if (activeRequest) return activeRequest;
+
+  const request = createOrRestoreAdminTotpEnrollment(userId);
+  enrollmentRequests.set(userId, request);
+
+  try {
+    return await request;
+  } finally {
+    if (enrollmentRequests.get(userId) === request) {
+      enrollmentRequests.delete(userId);
+    }
+  }
 }
 
 export async function verifyAdminTotp(factorId: string, code: string) {
+  const supabase = getSupabaseClient();
   const { error } =
-    await getSupabaseClient().auth.mfa.challengeAndVerify({
+    await supabase.auth.mfa.challengeAndVerify({
       factorId,
       code: code.replace(/\s+/g, ""),
     });
   if (error) throw error;
+
+  const { data: sessionData } = await supabase.auth.getSession();
+  if (sessionData.session?.user.id) {
+    clearStoredTotpEnrollment(sessionData.session.user.id);
+  }
+
   return getAdminAccess();
 }
 
