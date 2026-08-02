@@ -29,7 +29,7 @@ export default function TatsagarmitraPage({ project }: { project: Project }) {
     <>
       <Seo title={project.name} description={project.seoDescription} path={`/projects/${project.slug}`} image={project.image} />
 
-      <section className="section initiative-hero-section">
+      <section className="section initiative-hero-section tatsagarmitra-page">
         <div className="shell initiative-hero initiative-hero--sagarmitra initiative-hero--long-title glass-panel">
           <Reveal className="initiative-hero__copy">
             <p className="eyebrow">Coastal stewardship · DRITH Infra</p>
@@ -42,21 +42,6 @@ export default function TatsagarmitraPage({ project }: { project: Project }) {
           </Reveal>
           <Reveal className="initiative-hero__media" delay={0.08}>
             <OptimizedImage src={project.image} alt={project.imageAlt} loading="eager" decoding="async" fetchPriority="high" sizes="(max-width: 760px) 92vw, 48vw" />
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="section initiative-section initiative-section--tight">
-        <div className="shell initiative-message initiative-message--compact glass-panel">
-          <Reveal>
-            <p className="eyebrow">The idea</p>
-            <h2>Protecting the coast requires direct and collective responsibility.</h2>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <p>
-              TATSagarMitra reflects DRITH Infra&apos;s commitment to care for the coastal environment—not only through
-              infrastructure, but also through thoughtful action alongside others.
-            </p>
           </Reveal>
         </div>
       </section>

@@ -121,7 +121,9 @@ function applyRouteToTemplate(template, routePath, markup, metadata, criticalHom
       .replaceAll("</style", "<\\/style");
     routeHtml = routeHtml
       .replace("data-home-preload ", "")
-      .replace("  </head>", `    <style data-critical-home>${safeCriticalCss}</style>\n  </head>`);
+      // Keep critical CSS before the deferred full stylesheet so the complete
+      // design system wins the cascade as soon as it finishes loading.
+      .replace("  <head>", `  <head>\n    <style data-critical-home>${safeCriticalCss}</style>`);
     return deferStylesheets(routeHtml);
   }
 

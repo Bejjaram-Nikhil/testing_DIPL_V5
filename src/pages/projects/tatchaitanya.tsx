@@ -93,38 +93,38 @@ export default function TatchaitanyaPage({ project }: { project: Project }) {
       </section>
 
       <section className="section initiative-section initiative-section--tight">
-        <div className="shell initiative-message glass-panel">
-          <Reveal>
-            <p className="eyebrow">The idea</p>
-            <h2>Understanding the coast is the first step towards protecting it.</h2>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <p>
-              TATChaitanya is a public-awareness initiative that brings meaningful social and environmental ideas
-              into everyday conversation. Through approachable communication, shared learning and outreach, it
-              encourages people to notice, understand and take part.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+        <div className="shell initiative-overview-layout">
+          <div className="initiative-message initiative-message--overview glass-panel">
+            <Reveal>
+              <p className="eyebrow">The idea</p>
+              <h2>Understanding the coast is the first step towards protecting it.</h2>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <p>
+                TATChaitanya is a public-awareness initiative that brings meaningful social and environmental ideas
+                into everyday conversation. Through approachable communication, shared learning and outreach, it
+                encourages people to notice, understand and take part.
+              </p>
+            </Reveal>
+          </div>
 
-      <section className="section initiative-section initiative-section--tight">
-        <div className="shell initiative-focus-layout">
-          <Reveal className="initiative-section-heading">
-            <p className="eyebrow">What it covers</p>
-            <h2>Awareness, made accessible.</h2>
-            <p>
-              Beginning with the coast, TATChaitanya connects people with ideas that shape communities, nature and
-              our shared future.
-            </p>
-          </Reveal>
-          <div className="initiative-topic-list" aria-label="TATChaitanya focus areas">
-            {tatchaitanyaFocus.map((item, index) => (
-              <Reveal key={item} className="initiative-topic" delay={index * 0.035}>
-                <span aria-hidden="true">0{index + 1}</span>
-                <p>{item}</p>
-              </Reveal>
-            ))}
+          <div className="initiative-focus-layout initiative-focus-layout--overview">
+            <Reveal className="initiative-section-heading">
+              <p className="eyebrow">What it covers</p>
+              <h2>Awareness, made accessible.</h2>
+              <p>
+                Beginning with the coast, TATChaitanya connects people with ideas that shape communities, nature and
+                our shared future.
+              </p>
+            </Reveal>
+            <div className="initiative-topic-list" aria-label="TATChaitanya focus areas">
+              {tatchaitanyaFocus.map((item, index) => (
+                <Reveal key={item} className="initiative-topic" delay={index * 0.035}>
+                  <span aria-hidden="true">0{index + 1}</span>
+                  <p>{item}</p>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </section>

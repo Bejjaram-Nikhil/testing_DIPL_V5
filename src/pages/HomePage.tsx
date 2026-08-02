@@ -28,9 +28,10 @@ export default function HomePage() {
         <AdaptiveVideo
           className="home-adaptive-video"
           mediaClassName="home-video-hero__media"
-          poster={responsiveAssets.hero.home}
+          poster={responsiveAssets.hero.homeVideoPoster}
           posterSizes="100vw"
           sources={assets.videos.homeHero}
+          startAt={0.25}
           eagerPoster
           playLabel="Play background video"
         />

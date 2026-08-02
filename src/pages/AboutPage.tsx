@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { ContactCta } from "../components/sections/ContactCta";
-import { BlogPreviewSection } from "../components/sections/BlogPreviewSection";
 import { KpiBand } from "../components/sections/KpiBand";
 import { Partners } from "../components/sections/Partners";
 import { Seo } from "../components/system/Seo";
@@ -217,7 +216,6 @@ export default function AboutPage() {
       </section>
 
       <KpiBand />
-      <BlogPreviewSection />
       <Partners />
       <ContactCta />
     </>

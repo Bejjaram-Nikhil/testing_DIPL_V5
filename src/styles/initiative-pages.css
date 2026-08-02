@@ -113,6 +113,42 @@
   font-size: clamp(2rem, 4.2vw, 3.8rem);
 }
 
+.initiative-overview-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.82fr) minmax(0, 1.18fr);
+  align-items: stretch;
+  gap: clamp(28px, 4vw, 58px);
+}
+
+.initiative-message--overview {
+  grid-template-columns: 1fr;
+  align-content: start;
+  align-items: start;
+  gap: clamp(24px, 3vw, 42px);
+  height: 100%;
+  padding: clamp(28px, 4vw, 52px);
+}
+
+.initiative-message--overview h2 {
+  font-size: clamp(2rem, 3.4vw, 3.4rem);
+}
+
+.initiative-focus-layout.initiative-focus-layout--overview {
+  grid-template-columns: 1fr;
+  align-content: start;
+  gap: clamp(26px, 3.5vw, 44px);
+  padding-block: clamp(12px, 1.8vw, 24px);
+}
+
+.initiative-focus-layout--overview .initiative-topic-list {
+  grid-template-columns: 1fr;
+}
+
+.initiative-focus-layout--overview .initiative-topic {
+  min-height: 0;
+  padding: clamp(18px, 2.2vw, 24px);
+}
+
 .initiative-focus-layout {
   display: grid;
   grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.28fr);
@@ -345,6 +381,76 @@
   font-size: 0.94rem;
 }
 
+/* TATSagarMitra: one soft cream, green and Prussian-blue surface. */
+body:has(.tatsagarmitra-page) {
+  background:
+    radial-gradient(ellipse at 5% 10%, rgba(49, 169, 130, 0.3), transparent 34%),
+    radial-gradient(ellipse at 96% 32%, rgba(8, 47, 63, 0.2), transparent 31%),
+    radial-gradient(ellipse at 12% 70%, rgba(255, 242, 189, 0.58), transparent 38%),
+    radial-gradient(ellipse at 92% 91%, rgba(8, 47, 63, 0.14), transparent 30%),
+    linear-gradient(150deg, var(--paper) 0%, #eef8ed 42%, #dcefe4 69%, #f8edc8 100%);
+}
+
+body:has(.tatsagarmitra-page) main,
+body:has(.tatsagarmitra-page) footer.site-footer {
+  background: transparent !important;
+}
+
+body:has(.tatsagarmitra-page) main > section.section {
+  border-block: 0;
+  background: transparent;
+}
+
+body:has(.tatsagarmitra-page) main :is(
+  .initiative-hero,
+  .initiative-action-card,
+  .kpi-preview-card,
+  .contact-cta
+) {
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.46), rgba(234, 249, 237, 0.22) 52%, rgba(255, 242, 189, 0.18));
+  -webkit-backdrop-filter: blur(24px) saturate(145%);
+  backdrop-filter: blur(24px) saturate(145%);
+  box-shadow: none;
+}
+
+body:has(.tatsagarmitra-page) main :is(.initiative-hero__media, .button) {
+  box-shadow: none;
+}
+
+body:has(.tatsagarmitra-page) main .initiative-action-card {
+  transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+}
+
+body:has(.tatsagarmitra-page) main .initiative-action-card:hover {
+  border-color: rgba(154, 230, 188, 0.96);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.58), rgba(234, 249, 237, 0.28) 52%, rgba(255, 242, 189, 0.22));
+  box-shadow: none;
+  transform: translateY(-3px);
+}
+
+@media (max-width: 720px) {
+  body:has(.tatsagarmitra-page) {
+    background:
+      radial-gradient(ellipse at 4% 8%, rgba(49, 169, 130, 0.34), transparent 27%),
+      radial-gradient(ellipse at 102% 34%, rgba(8, 47, 63, 0.22), transparent 27%),
+      radial-gradient(ellipse at -4% 69%, rgba(255, 242, 189, 0.64), transparent 31%),
+      radial-gradient(ellipse at 96% 94%, rgba(8, 47, 63, 0.16), transparent 26%),
+      linear-gradient(160deg, var(--paper) 0%, #eef8ed 44%, #dcefe4 70%, #f8edc8 100%);
+  }
+
+  body:has(.tatsagarmitra-page) main :is(
+    .initiative-hero,
+    .initiative-action-card,
+    .kpi-preview-card,
+    .contact-cta
+  ) {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.5), rgba(234, 249, 237, 0.2) 56%, rgba(255, 242, 189, 0.16));
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+  }
+}
+
 .coastal-video-section .initiative-section-heading {
   max-width: 720px;
   margin-bottom: clamp(24px, 4vw, 40px);
@@ -485,9 +591,14 @@
 @media (max-width: 920px) {
   .initiative-hero,
   .initiative-message,
+  .initiative-overview-layout,
   .initiative-focus-layout,
   .initiative-social {
     grid-template-columns: 1fr;
+  }
+
+  .initiative-focus-layout--overview {
+    padding-block: 0;
   }
 
   .initiative-hero__copy {

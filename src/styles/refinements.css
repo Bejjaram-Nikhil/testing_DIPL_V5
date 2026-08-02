@@ -167,9 +167,23 @@
   transform: none;
 }
 
+.about-team-section .team-card > p {
+  margin-bottom: clamp(22px, 3vw, 30px);
+}
+
+.about-team-section .team-card .button {
+  align-self: center;
+  justify-content: center;
+  margin-top: auto;
+}
+
 .about-team-section .team-card .button:hover,
 .about-team-section .team-card .button:focus-visible {
   transform: none;
+}
+
+.about-story-copy .button {
+  margin-top: clamp(12px, 2vw, 20px);
 }
 
 /* Latest blogs on the About page. */

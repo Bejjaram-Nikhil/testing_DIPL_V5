@@ -49,10 +49,11 @@ function singleImage(src: string, width: number, height: number): ResponsiveImag
 export const responsiveAssets = {
   brand: {
     logo: localResponsiveImage("brand/logo", [128, 256, 512], 512, 512),
-    wordmark: localResponsiveImage("brand/wordmark", [384, 768, 1024], 1024, 351),
+    wordmark: singleImage(`${STORAGE_ROOT}/logos/diplmax.png`, 1920, 665),
   },
   hero: {
     home: singleImage(`${STORAGE_ROOT}/Project/tatrakshak.webp`, 1024, 1024),
+    homeVideoPoster: localResponsiveImage("hero/video-poster", [480, 960, 1600], 1600, 902),
   },
   projects: {
     coast: singleImage(`${STORAGE_ROOT}/Project/tatrakshak.webp`, 1024, 1024),

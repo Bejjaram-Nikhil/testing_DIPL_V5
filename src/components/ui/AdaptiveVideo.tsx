@@ -12,14 +12,10 @@ type AdaptiveVideoProps = {
   posterAlt?: string;
   posterSizes?: string;
   sources: readonly ResponsiveVideoSource[];
+  startAt?: number;
   eagerPoster?: boolean;
   decorative?: boolean;
   playLabel: string;
-};
-
-type IdleWindow = Window & {
-  requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
-  cancelIdleCallback?: (handle: number) => void;
 };
 
 export function AdaptiveVideo({
@@ -29,6 +25,7 @@ export function AdaptiveVideo({
   posterAlt = "",
   posterSizes,
   sources,
+  startAt = 0,
   eagerPoster = false,
   decorative = true,
   playLabel,
@@ -40,6 +37,7 @@ export function AdaptiveVideo({
   const [mode, setMode] = useState<AdaptiveVideoMode>("pending");
   const [shouldLoad, setShouldLoad] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const element = containerRef.current;
@@ -58,26 +56,19 @@ export function AdaptiveVideo({
 
   useEffect(() => {
     const nextMode: AdaptiveVideoMode = shouldConserveData() || prefersReducedMotion() ? "manual" : "automatic";
-    const idleWindow = window as IdleWindow;
-    let timer = 0;
-    let idleHandle: number | undefined;
+    let firstFrame = 0;
+    let secondFrame = 0;
 
-    const settle = () => setMode(nextMode);
-    const onLoad = () => {
-      if (idleWindow.requestIdleCallback) {
-        idleHandle = idleWindow.requestIdleCallback(settle, { timeout: 1200 });
-      } else {
-        timer = window.setTimeout(settle, 500);
-      }
-    };
-
-    if (document.readyState === "complete") onLoad();
-    else window.addEventListener("load", onLoad, { once: true });
+    // Two animation frames let the lightweight poster and hero copy paint first,
+    // then capable connections can begin fetching the video without waiting for
+    // every image and third-party resource on the page to finish loading.
+    firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => setMode(nextMode));
+    });
 
     return () => {
-      window.removeEventListener("load", onLoad);
-      window.clearTimeout(timer);
-      if (idleHandle !== undefined) idleWindow.cancelIdleCallback?.(idleHandle);
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
     };
   }, []);
 
@@ -89,8 +80,24 @@ export function AdaptiveVideo({
     const video = videoRef.current;
     if (!video || !isReady) return;
     if (isVisible) void video.play().catch(() => setMode("manual"));
-    else video.pause();
-  }, [isReady, isVisible]);
+    else {
+      video.pause();
+      if (startAt > 0) video.currentTime = startAt;
+    }
+  }, [isReady, isVisible, startAt]);
+
+  function alignOpeningFrame() {
+    const video = videoRef.current;
+    if (!video || startAt <= 0 || !Number.isFinite(video.duration) || video.duration <= startAt) return;
+    video.currentTime = startAt;
+  }
+
+  function markReadyWhenAligned() {
+    const video = videoRef.current;
+    if (!video) return;
+    if (startAt > 0 && Math.abs(video.currentTime - startAt) > 0.08) return;
+    setIsReady(true);
+  }
 
   function requestPlayback() {
     setShouldLoad(true);
@@ -118,21 +125,26 @@ export function AdaptiveVideo({
         <video
           ref={videoRef}
           id={videoId}
-          className={`adaptive-video__media ${isReady ? "adaptive-video__media--ready" : ""} ${mediaClassName}`.trim()}
+          className={`adaptive-video__media ${isPlaying ? "adaptive-video__media--ready" : ""} ${mediaClassName}`.trim()}
           muted
           loop
           playsInline
           preload="auto"
           aria-hidden={decorative || undefined}
           tabIndex={decorative ? -1 : undefined}
-          onCanPlay={() => setIsReady(true)}
+          onLoadedMetadata={alignOpeningFrame}
+          onLoadedData={markReadyWhenAligned}
+          onCanPlay={markReadyWhenAligned}
+          onSeeked={markReadyWhenAligned}
+          onPlaying={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
         >
           {sources.map((source) => (
             <source key={`${source.src}-${source.media ?? "all"}`} src={source.src} type={source.type} media={source.media} />
           ))}
         </video>
       ) : null}
-      {mode === "manual" && !isReady ? (
+      {mode === "manual" && !isPlaying ? (
         <button className="adaptive-video__play" type="button" aria-controls={videoId} onClick={requestPlayback}>
           <span aria-hidden="true">▶</span>
           {playLabel}
@@ -141,4 +153,3 @@ export function AdaptiveVideo({
     </div>
   );
 }
-
