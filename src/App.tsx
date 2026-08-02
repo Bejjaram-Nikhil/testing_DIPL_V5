@@ -11,7 +11,6 @@ const ProjectsPage = lazy(() => import("./pages/ProjectsPage"));
 const ProjectDetailPage = lazy(() => import("./pages/ProjectDetailPage"));
 const KpisPage = lazy(() => import("./pages/KpisPage"));
 const BlogsPage = lazy(() => import("./pages/BlogsPage"));
-const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const PoliciesPage = lazy(() => import("./pages/PoliciesPage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
@@ -31,7 +30,6 @@ export function App() {
           <Route path="projects/:projectSlug" element={<ProjectDetailPage />} />
           <Route path="kpis" element={<KpisPage />} />
           <Route path="blogs" element={<BlogsPage />} />
-          <Route path="blogs/:articleSlug" element={<ArticlePage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="policies" element={<PoliciesPage />} />
           <Route path="*" element={<NotFoundPage />} />

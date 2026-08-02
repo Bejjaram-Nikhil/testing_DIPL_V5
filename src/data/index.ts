@@ -1,4 +1,4 @@
-export { blogPosts, journeyArticle } from "./articles";
+export { blogPosts } from "./articles";
 export type { BlogPost } from "./articles";
 export { navigation } from "./navigation";
 export { partners } from "./partners";

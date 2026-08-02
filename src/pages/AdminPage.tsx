@@ -166,10 +166,6 @@ function getPreviewAnalytics(range: AnalyticsRange): AnalyticsDashboard {
       { label: "/kpis", value: 196 },
       { label: "/blogs", value: 174 },
       { label: "/about", value: 132 },
-      {
-        label: "/blogs/the-awareness-that-started-drith-infra",
-        value: 112,
-      },
       { label: "/contact", value: 86 },
     ],
     topCountries: [
